@@ -160,6 +160,7 @@ main{padding:clamp(.6rem,2vw,1.4rem);padding-bottom:5rem;min-width:0;background:
 .legend .k.coin{width:1.5rem}
 .k.pill{border-radius:7px;background:var(--kick);color:#fff;font-size:.78rem;padding:0 .45rem;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
 .k.ps{background:#1e1e1e}
+.k.pill.ac-punch{background:var(--red)} .k.pill.ac-kick{background:var(--kick)} .k.pill.ac-neutral{background:var(--neutral)}
 .k.ps svg,.k.ps-in{display:block;width:62%;height:62%}
 .k.ps.ps-SQ{color:#f08ccf} .k.ps.ps-TR{color:#2fcf9f} .k.ps.ps-CI{color:#ff5a4f} .k.ps.ps-CR{color:#7fa2ff}
 .k.xb-A{background:#4e9d2a} .k.xb-B{background:#d93a30} .k.xb-X{background:#2a68cf} .k.xb-Y{background:#e6ac00;color:#1b1b1b}
@@ -268,6 +269,7 @@ body:not(.editing) .edit-only{display:none !important}
           <button class="xpbtn" data-ctrl="sega">Sega</button>
           <button class="xpbtn" data-ctrl="ps">PlayStation</button>
           <button class="xpbtn" data-ctrl="xbox">Xbox</button>
+          <button class="xpbtn" data-ctrl="arcade">Arcade (HP, LK…)</button>
         </div>
         <button class="linkbtn" id="ctrlCustom">Personalizar botones</button>
       </div></section>
@@ -340,7 +342,8 @@ const ACT_CLASS = { HP:"punch", LP:"punch", HK:"kick", LK:"kick", BL:"neutral", 
 const PROFILES = {
   sega: { name:"Sega", keys:["X","Y","Z","A","B","C","L","R"], def:{ HP:"X", LP:"A", HK:"Z", LK:"C", BL:"B", RUN:"Y" } },
   ps:   { name:"PlayStation", keys:["SQ","TR","CI","CR","L1","R1","L2","R2"], def:{ HP:"SQ", LP:"CR", HK:"TR", LK:"CI", BL:"R1", RUN:"R2" } },
-  xbox: { name:"Xbox", keys:["X","Y","B","A","LB","RB","LT","RT"], def:{ HP:"X", LP:"A", HK:"Y", LK:"B", BL:"RB", RUN:"RT" } }
+  xbox: { name:"Xbox", keys:["X","Y","B","A","LB","RB","LT","RT"], def:{ HP:"X", LP:"A", HK:"Y", LK:"B", BL:"RB", RUN:"RT" } },
+  arcade: { name:"Arcade", keys:["HP","LP","HK","LK","BL","RN"], def:{ HP:"HP", LP:"LP", HK:"HK", LK:"LK", BL:"BL", RUN:"RN" } }
 };
 const PS_NAMES = { SQ:"cuadrado", TR:"triángulo", CI:"círculo", CR:"equis" };
 const PS_PUA = { SQ:"\uE001", TR:"\uE002", CI:"\uE003", CR:"\uE004" };
@@ -360,6 +363,7 @@ function keyHTML(k, act){
   const p = ctrl.profile;
   if (p === "ps" && PS_NAMES[k]) return `<span class="k coin ps ps-${k}" title="${PS_NAMES[k]}">${psSVG(k, "")}</span>`;
   if (p === "xbox" && /^[ABXY]$/.test(k)) return `<span class="k coin xb-${k}">${k}</span>`;
+  if (p === "arcade") return `<span class="k pill ac-${ACT_CLASS[act]}">${esc(k)}</span>`;
   if (p === "sega" && k.length === 1 && k !== "L" && k !== "R") return `<span class="k coin ${ACT_CLASS[act]}">${k}</span>`;
   return `<span class="k pill">${esc(k)}</span>`;
 }
