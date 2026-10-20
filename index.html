@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Códice del Torneo</title>
+<meta name="description" content="Fichas de movimientos, remates y combos de cada luchador.">
+<meta name="theme-color" content="#9b0d12">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Códice">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style id="css">:root{
+  --desk:#1b1b1b; --desk-2:#2a0b0c;
+  --win:#dedede; --win-2:#f2f2f2; --field:#ffffff;
+  --pane-top:#5b5b5b; --pane-bot:#262626;
+  --grp-head-a:#ffffff; --grp-head-b:#d6d6d6; --grp-body:#efefef; --grp-ink:#a3121a;
+  --ink:#141414; --muted:#555555; --edge:#7a7a7a; --edge-soft:#b3b3b3;
+  --red:#c4161c; --red-dark:#7d0a0e; --red-light:#ec5a4f; --sel-ink:#ffffff;
+  --kick:#3a3a3a; --neutral:#8a8a8a; --coin-ink:#ffffff; --gold:#c4161c;
+  --btn-a:#ffffff; --btn-b:#dcdcdc;
+  --card-paper:#fbfaf7; --card-row:#e7e5e0; --card-ink:#151413; --card-bar:#151413; --card-bar-ink:#fbfaf7; --card-edge:#151413;
+  --ui:Tahoma, Verdana, "Segoe UI", "DejaVu Sans", Geneva, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --desk:#000000; --desk-2:#220506;
+    --win:#2a2a2a; --win-2:#1f1f1f; --field:#141414;
+    --pane-top:#3a3a3a; --pane-bot:#121212;
+    --grp-head-a:#4a4a4a; --grp-head-b:#2f2f2f; --grp-body:#232323; --grp-ink:#ff6b5e;
+    --ink:#ececec; --muted:#a9a9a9; --edge:#5c5c5c; --edge-soft:#444444;
+    --red:#c4161c; --red-dark:#6a080b; --red-light:#ff6b5e; --sel-ink:#ffffff;
+    --kick:#5e5e5e; --neutral:#9a9a9a; --coin-ink:#ffffff; --gold:#ff6b5e;
+    --btn-a:#4a4a4a; --btn-b:#2e2e2e;
+    --card-paper:#ecebe6; --card-row:#d9d7d0; --card-ink:#151413; --card-bar:#0e0d0c; --card-bar-ink:#ecebe6; --card-edge:#0e0d0c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#000000; --desk-2:#220506;
+  --win:#2a2a2a; --win-2:#1f1f1f; --field:#141414;
+  --pane-top:#3a3a3a; --pane-bot:#121212;
+  --grp-head-a:#4a4a4a; --grp-head-b:#2f2f2f; --grp-body:#232323; --grp-ink:#ff6b5e;
+  --ink:#ececec; --muted:#a9a9a9; --edge:#5c5c5c; --edge-soft:#444444;
+  --red:#c4161c; --red-dark:#6a080b; --red-light:#ff6b5e; --sel-ink:#ffffff;
+  --kick:#5e5e5e; --neutral:#9a9a9a; --coin-ink:#ffffff; --gold:#ff6b5e;
+  --btn-a:#4a4a4a; --btn-b:#2e2e2e;
+  --card-paper:#ecebe6; --card-row:#d9d7d0; --card-ink:#151413; --card-bar:#0e0d0c; --card-bar-ink:#ecebe6; --card-edge:#0e0d0c;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;min-height:100%;font-family:var(--ui);font-size:15px;line-height:1.4;color:var(--ink);
+  background:radial-gradient(ellipse at 50% 120%, var(--desk-2), var(--desk) 65%) fixed var(--desk)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--desk)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:1px dotted var(--ink);outline-offset:2px}
+[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* window */
+.desktop{padding:clamp(0px,2.5vw,28px)}
+.window{max-width:1200px;margin:0 auto;border:3px solid var(--red-dark);border-top:0;border-radius:9px 9px 0 0;
+  background:var(--win);box-shadow:0 12px 40px rgba(0,0,0,.6);display:flex;flex-direction:column;min-height:calc(100vh - 5vw)}
+.titlebar{display:flex;align-items:center;gap:.5rem;padding:.35rem .4rem .35rem .6rem;border-radius:8px 8px 0 0;margin:0 -3px;
+  background:linear-gradient(180deg,#f07a6f 0%,#d42a22 7%,#b8141a 45%,#9b0d12 85%,#7d0a0e 100%);color:#fff;
+  border:1px solid #5a0508;border-bottom:0}
+.ticon{font-size:1.05rem}
+.ttitle{flex:1;font-weight:700;font-size:1rem;text-shadow:1px 1px 0 rgba(0,0,0,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtns{display:flex;gap:2px}
+.tbtns i{display:grid;place-items:center;width:22px;height:22px;border:1px solid #fff;border-radius:3px;font-style:normal;font-weight:700;font-size:.8rem;
+  background:linear-gradient(180deg,#e04a40,#a50f14);box-shadow:inset 0 0 2px rgba(255,255,255,.6)}
+.tbtns i.x{background:linear-gradient(180deg,#5a5a5a,#1d1d1d)}
+.toolbar{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;padding:.35rem .5rem;background:var(--win-2);border-bottom:1px solid var(--edge-soft)}
+.toolbar .spacer{flex:1}
+.xpbtn{border:1px solid var(--edge);border-radius:3px;padding:.25rem .8rem;cursor:pointer;
+  background:linear-gradient(180deg,var(--btn-a),var(--btn-b));color:var(--ink)}
+.xpbtn:hover{box-shadow:inset 0 0 0 2px var(--red-light)}
+.xpbtn:active{background:linear-gradient(180deg,var(--btn-b),var(--btn-a))}
+.xpbtn[aria-pressed="true"]{background:var(--red);border-color:var(--red-dark);color:var(--sel-ink)}
+.xpbtn.primary{border-color:var(--red-dark);font-weight:700}
+.xpbtn.danger{color:var(--red-light);border-color:var(--red)}
+.xpbtn:disabled{opacity:.55;cursor:default}
+
+.body{display:grid;grid-template-columns:clamp(118px,30vw,250px) minmax(0,1fr);flex:1;min-height:0}
+.statusbar{display:flex;gap:4px;padding:3px;background:var(--win-2);border-top:1px solid var(--edge-soft);font-size:.8rem;color:var(--muted)}
+.statusbar span{flex:1;padding:1px 6px;border:1px solid var(--edge-soft);border-right-color:var(--win);border-bottom-color:var(--win)}
+
+/* task pane */
+.taskpane{background:linear-gradient(180deg,var(--pane-top),var(--pane-bot));padding:10px 8px;overflow:auto}
+.tp-group{margin-bottom:12px;border-radius:6px 6px 0 0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.tp-head{margin:0;padding:.35rem .6rem;font-size:.85rem;font-weight:700;color:var(--grp-ink);
+  background:linear-gradient(90deg,var(--grp-head-a),var(--grp-head-b))}
+.tp-body{background:var(--grp-body);padding:.4rem}
+.search{width:100%;padding:.25rem .4rem;border:1px solid var(--edge);background:var(--field);border-radius:0}
+.tp-body ul{list-style:none;margin:0;padding:0}
+.tp-body li button{display:flex;align-items:center;gap:.45rem;width:100%;text-align:left;background:none;border:1px solid transparent;
+  padding:.3rem .35rem;cursor:pointer;border-radius:2px;font-size:.9rem;line-height:1.2}
+.tp-body li button:hover{border-color:var(--edge-soft);background:var(--win-2)}
+.tp-body li button[aria-current="true"]{background:var(--red);color:var(--sel-ink);border-color:var(--red-dark)}
+.tp-body li button .nm{flex:1;min-width:0;overflow-wrap:anywhere}
+.tp-body li small{font-size:.75rem;opacity:.75}
+.thumb{flex:none;width:28px;height:28px;border:1px solid var(--edge);background:#151413;color:#fbfaf7;display:grid;place-items:center;
+  font-weight:700;font-size:.72rem;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.fav-mark{color:var(--gold)}
+[aria-current="true"] .fav-mark{color:var(--sel-ink)}
+.addchar{display:flex;gap:.3rem;margin-top:.5rem;flex-wrap:wrap}
+.addchar input{flex:1;min-width:0;padding:.25rem .4rem;border:1px solid var(--edge);background:var(--field)}
+.hint{color:var(--muted);font-size:.85rem;margin:.5rem 0}
+
+/* detail */
+main{padding:clamp(.6rem,2vw,1.4rem);padding-bottom:5rem;min-width:0;background:var(--win);container-type:inline-size}
+.dhead{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding-bottom:.6rem;margin-bottom:.8rem;border-bottom:1px solid var(--edge-soft)}
+.dhead h2{margin:0;font-size:1.35rem;flex:1 1 auto;min-width:0}
+.dhead .acts{display:flex;gap:.35rem;flex-wrap:wrap}
+.seg{display:inline-flex}
+.seg .xpbtn{border-radius:0}
+.seg .xpbtn:first-child{border-radius:3px 0 0 3px}
+.seg .xpbtn:last-child{border-radius:0 3px 3px 0;border-left:0}
+.favchar[aria-pressed="true"]{background:linear-gradient(180deg,var(--btn-a),var(--btn-b));color:var(--red-light);border-color:var(--red);font-weight:700}
+.edit-panel{border:1px solid var(--edge-soft);background:var(--win-2);padding:.6rem;margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.edit-panel input[type=text]{padding:.25rem .4rem;border:1px solid var(--edge);background:var(--field);min-width:0}
+.edit-panel .lbl{font-weight:700;font-size:.85rem;margin-right:.2rem}
+#imgMsg{font-size:.85rem;color:var(--muted)}
+
+.chips{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.6rem}
+.group h3{font-size:1rem;color:var(--red-light);margin:1rem 0 .2rem;padding-bottom:.15rem;border-bottom:1px solid var(--red)}
+.group h3 button{all:unset;cursor:pointer;text-decoration:underline}
+.moves{list-style:none;margin:0;padding:0}
+.move{display:grid;grid-template-columns:auto minmax(120px,1fr) auto;gap:.35rem .6rem;align-items:center;padding:.5rem 0;border-bottom:1px dotted var(--edge-soft)}
+.move .name{font-weight:700}
+.move .name small{color:var(--muted);font-weight:400;font-size:.8rem;margin-left:.3rem}
+.move .note{display:block;color:var(--muted);font-weight:400;font-size:.82rem}
+.move .row-tools{grid-column:1/-1;display:flex;gap:.3rem}
+.star{background:none;border:0;cursor:pointer;font-size:1.3rem;line-height:1;padding:0 .15rem;color:var(--muted)}
+.star:hover,.star[aria-pressed="true"]{color:var(--gold)}
+.seq{display:flex;flex-wrap:wrap;gap:.25rem;align-items:center;justify-content:flex-end}
+.k{display:inline-grid;place-items:center;min-width:2rem;height:2rem;padding:0 .3rem;font-weight:700;line-height:1}
+.k.dir{border-radius:3px;border:1px solid var(--edge);color:var(--ink);background:linear-gradient(180deg,var(--btn-a),var(--btn-b));
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.18)}
+.k.coin{border-radius:50%;width:2rem;padding:0;color:var(--coin-ink);font-size:.95rem;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.3), inset 0 2px 0 rgba(255,255,255,.3)}
+.k.punch{background:var(--red)} .k.kick{background:var(--kick)} .k.neutral{background:var(--neutral)}
+.k.txt{border-radius:3px;border:1px solid var(--edge);font-size:.8rem}
+.k.word{border-radius:3px;border:1px dashed var(--edge);color:var(--muted);font-size:.8rem}
+.plus{color:var(--muted);font-weight:700}
+.arr{width:1.3em;height:1.3em;display:block}
+.arr-in{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.22em;margin:0 .05em}
+.legend{display:flex;gap:.4rem .9rem;flex-wrap:wrap;color:var(--muted);font-size:.82rem;margin-top:1.4rem;padding-top:.6rem;border-top:1px solid var(--edge-soft)}
+.legend > span{display:inline-flex;align-items:center;gap:.3rem}
+.legend .k{min-width:1.5rem;height:1.5rem;font-size:.75rem}
+.legend .k.coin{width:1.5rem}
+.k.pill{border-radius:7px;background:var(--kick);color:#fff;font-size:.78rem;padding:0 .45rem;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.k.ps{background:#1e1e1e}
+.k.ps svg,.k.ps-in{display:block;width:62%;height:62%}
+.k.ps.ps-SQ{color:#f08ccf} .k.ps.ps-TR{color:#2fcf9f} .k.ps.ps-CI{color:#ff5a4f} .k.ps.ps-CR{color:#7fa2ff}
+.k.xb-A{background:#4e9d2a} .k.xb-B{background:#d93a30} .k.xb-X{background:#2a68cf} .k.xb-Y{background:#e6ac00;color:#1b1b1b}
+.btn-in{display:inline-block;width:1.05em;height:1.05em;vertical-align:-.18em;margin:0 .05em}
+.ctrlseg{display:flex;flex-direction:column;gap:3px}
+.ctrlseg .xpbtn{text-align:left;font-size:.85rem;padding:.25rem .5rem}
+.linkbtn{background:none;border:0;padding:.3rem 0 0;color:var(--red-light);text-decoration:underline;cursor:pointer;font-size:.8rem}
+#ctrlDlg .maprow{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:center;padding:.3rem 0;border-bottom:1px dotted var(--edge-soft)}
+#ctrlDlg select{padding:.2rem .3rem;border:1px solid var(--edge);background:var(--field);min-width:7rem}
+
+.moveform{margin-top:1.2rem;border:1px solid var(--edge);background:var(--win-2)}
+.moveform h3{margin:0;padding:.3rem .6rem;font-size:.9rem;color:#fff;background:linear-gradient(180deg,#d42a22,#9b0d12)}
+.moveform .inner{padding:.7rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.5rem}
+.fields label{display:flex;flex-direction:column;gap:.15rem;font-weight:700;font-size:.85rem}
+.fields input{padding:.3rem .4rem;border:1px solid var(--edge);background:var(--field);font-weight:400}
+.keypad{display:flex;flex-wrap:wrap;gap:.3rem;margin:.6rem 0}
+.keypad button{min-width:2.4rem;height:2.4rem;border:1px solid var(--edge);border-radius:3px;cursor:pointer;font-weight:700;
+  background:linear-gradient(180deg,var(--btn-a),var(--btn-b))}
+.keypad button.kp-punch{color:var(--red-light)} .keypad button.kp-neutral{color:var(--muted)}
+.keypad .sep{width:1px;background:var(--edge-soft);margin:0 .15rem}
+.preview{min-height:2.2rem;display:flex;align-items:center;margin:.5rem 0}
+.formbtns{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.empty{padding:1.5rem 0;color:var(--muted);max-width:44ch}
+.empty strong{color:var(--ink)}
+.subhead{font-size:1rem;color:var(--red-light);margin:0 0 .5rem}
+.favchars{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 1.2rem}
+.favchars .xpbtn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem .3rem .3rem;font-weight:700}
+
+/* card */
+.card{max-width:470px;margin:0 auto;background:var(--card-paper);color:var(--card-ink);padding:14px 14px 22px;
+  box-shadow:0 6px 20px rgba(0,0,0,.35);font-family:Calibri, Carlito, "Segoe UI", Arial, sans-serif;font-size:1.02rem}
+.card-head{display:grid;grid-template-columns:64px 1fr;border:2px solid var(--card-edge)}
+.card-pic{grid-row:1/3;background:var(--card-bar);color:var(--card-bar-ink);display:grid;place-items:center;font-weight:700;font-size:1.4rem;min-height:64px;overflow:hidden}
+.card-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.card-name{margin:0;text-align:center;font-weight:700;font-size:1.2rem;padding:.15rem .4rem;background:var(--card-paper);color:var(--card-ink)}
+.card-bar{background:var(--card-bar);color:var(--card-bar-ink);text-align:center;font-weight:700;font-size:1.1rem;padding:.15rem .4rem;margin:0}
+.card-sec{border-left:2px solid var(--card-edge);border-right:2px solid var(--card-edge)}
+.card-sec > .card-bar{border-top:2px solid var(--card-edge)}
+.card ul{list-style:none;margin:0;padding:0}
+.card-row{background:var(--card-row);color:var(--card-ink);border-bottom:2px solid var(--card-edge);padding:.2rem .35rem;line-height:1.3}
+.card-sec.combos{background:var(--card-bar);border-bottom:2px solid var(--card-edge)}
+.card-sec.morphs ul{display:grid;grid-template-columns:1fr 1fr;column-gap:2px;background:var(--card-edge)}
+.card-sec:last-child.combos{padding-bottom:3rem}
+.card-sec.combos .card-row{background:var(--card-bar);color:var(--card-bar-ink);font-weight:700;border-bottom:2px solid var(--card-bar-ink)}
+.cardtools{display:flex;gap:.5rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:1rem}
+#dlMsg{color:var(--muted);font-size:.85rem}
+@container (max-width:360px){
+  .card{padding:6px 6px 12px;font-size:.78rem}
+  .card-head{grid-template-columns:44px 1fr}
+  .card-pic{min-height:44px;font-size:1rem}
+  .card-name{font-size:.92rem}
+  .card-bar{font-size:.85rem}
+  .move{grid-template-columns:auto 1fr}
+  .seq{grid-column:1/-1;justify-content:flex-start}
+  .k{min-width:1.7rem;height:1.7rem} .k.coin{width:1.7rem}
+}
+
+/* pending + dialogs */
+.pending{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;justify-content:center;
+  padding:.5rem 1rem;padding-bottom:calc(.5rem + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(180deg,#3a3a3a,#111);color:#fff;border-top:2px solid var(--red)}
+.pending p{margin:0;font-weight:700}
+.pending .xpbtn{color:var(--ink)}
+#saveMsg{color:#ff8a80;font-weight:700}
+dialog{border:3px solid var(--red-dark);border-radius:8px 8px 0 0;padding:0;background:var(--win);color:var(--ink);width:min(620px,94vw)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog .titlebar{margin:0;border-radius:6px 6px 0 0;border:0}
+dialog .dbody{padding:.8rem}
+dialog textarea{width:100%;height:220px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;border:1px solid var(--edge);background:var(--field);padding:.4rem}
+#dataMsg{min-height:1.3em;font-weight:700}
+#imgDlg img{display:block;max-width:100%;max-height:62vh;margin:0 auto .8rem}
+
+body:not(.editing) .edit-only{display:none !important}
+
+@media (max-width:560px){
+  .desktop{padding:0}
+  .window{border-radius:0;border-left:0;border-right:0;min-height:100vh}
+  .titlebar{border-radius:0}
+  .tbtns{display:none}
+  body{font-size:14px}
+  .taskpane{padding:6px 5px}
+  .tp-body{padding:.25rem}
+  .tp-body li button{font-size:.82rem;padding:.3rem .2rem;gap:.3rem}
+  .tp-body li small{display:none}
+  .thumb{width:22px;height:22px;font-size:.6rem}
+  .dhead h2{font-size:1.1rem;flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<p id="boot" style="padding:2rem 1.2rem;font-size:1.2rem;margin:0;color:#ddd">Cargando el códice…</p>
+<template id="shell"><div class="desktop">
+<div class="window">
+  <div class="titlebar"><span class="ticon" aria-hidden="true">⚔️</span><h1 class="ttitle" style="margin:0">Códice del Torneo</h1>
+    <span class="tbtns" aria-hidden="true"><i>_</i><i>□</i><i class="x">×</i></span></div>
+  <div class="toolbar" hidden>
+    <button class="xpbtn" id="editBtn" aria-pressed="false" hidden>Editar</button>
+    <button class="xpbtn edit-only" id="dataBtn">Copia de seguridad</button>
+    <span class="spacer"></span>
+  </div>
+  <div class="body">
+    <nav class="taskpane" aria-label="Personajes">
+      <section class="tp-group"><h2 class="tp-head">Mi control</h2><div class="tp-body">
+        <div class="ctrlseg" role="group" aria-label="Elegir control" id="ctrlSeg">
+          <button class="xpbtn" data-ctrl="sega">Sega</button>
+          <button class="xpbtn" data-ctrl="ps">PlayStation</button>
+          <button class="xpbtn" data-ctrl="xbox">Xbox</button>
+        </div>
+        <button class="linkbtn" id="ctrlCustom">Personalizar botones</button>
+      </div></section>
+      <section class="tp-group"><h2 class="tp-head">Favoritos</h2><div class="tp-body"><ul id="favList"></ul></div></section>
+      <section class="tp-group"><h2 class="tp-head">Luchadores</h2><div class="tp-body">
+        <label class="sr" for="search">Buscar personaje</label>
+        <input class="search" id="search" type="search" placeholder="Buscar">
+        <ul id="rosterList" style="margin-top:.35rem"></ul>
+        <form class="addchar edit-only" id="addCharForm">
+          <label class="sr" for="newChar">Nombre del nuevo personaje</label>
+          <input id="newChar" placeholder="Nuevo personaje" autocomplete="off">
+          <button class="xpbtn primary">Agregar</button>
+        </form>
+      </div></section>
+    </nav>
+    <main id="detail" aria-live="polite"></main>
+  </div>
+  <div class="statusbar"><span id="statusL"></span><span id="statusR"></span></div>
+</div>
+</div>
+<div class="pending" id="pendingBar" hidden>
+  <p>Tenés cambios que todavía no ven los demás.</p>
+  <button class="xpbtn primary" id="saveAll">Guardar para todos</button>
+  <button class="xpbtn" id="discardAll">Descartar cambios</button>
+  <span id="saveMsg" role="status"></span>
+</div>
+<dialog id="ctrlDlg">
+  <div class="titlebar"><span class="ttitle" id="ctrlDlgTitle">Personalizar botones</span></div>
+  <div class="dbody">
+    <p class="hint">Elegí qué botón de tu control hace cada acción. Se guarda solo en este dispositivo.</p>
+    <div id="ctrlRows"></div>
+    <div class="formbtns" style="margin-top:.8rem">
+      <button class="xpbtn primary" id="ctrlDone">Listo</button>
+      <button class="xpbtn" id="ctrlReset">Restablecer</button>
+    </div>
+  </div>
+</dialog>
+<dialog id="imgDlg">
+  <div class="titlebar"><span class="ttitle">Ficha lista</span></div>
+  <div class="dbody">
+    <p class="hint">Tocá “Descargar”. Si tu celular no la guarda, mantené apretada la imagen y elegí “Guardar imagen”.</p>
+    <img id="imgOut" alt="Imagen de la ficha">
+    <div class="formbtns"><a class="xpbtn primary" id="imgDl" href="#" download="ficha.png" style="text-decoration:none">Descargar</a><button class="xpbtn" id="closeImg">Cerrar</button></div>
+  </div>
+</dialog>
+<dialog id="dataDlg">
+  <div class="titlebar"><span class="ttitle">Copia de seguridad</span></div>
+  <div class="dbody">
+    <p class="hint">Copiá este texto y guardalo en un lugar seguro, o pegá una copia anterior para restaurarla.</p>
+    <textarea id="dataText" spellcheck="false" aria-label="Datos en formato JSON"></textarea>
+    <p id="dataMsg" role="status"></p>
+    <div class="formbtns">
+      <button class="xpbtn primary" id="copyData">Copiar</button>
+      <button class="xpbtn" id="loadData">Restaurar desde el texto</button>
+      <button class="xpbtn" id="closeData">Cerrar</button>
+    </div>
+  </div>
+</dialog>
+</template>
+<script id="codex-data" type="application/json">{"chars":[{"id":"jade","name":"Jade","moves":[{"id":"jade-s1","cat":"Especiales","name":"High Boomerang","input":"←, →, X","note":""},{"id":"jade-s2","cat":"Especiales","name":"Mid Boomerang","input":"←, →, A","note":""},{"id":"jade-s3","cat":"Especiales","name":"Low Boomerang","input":"←, →, C","note":""},{"id":"jade-s4","cat":"Especiales","name":"Projectile Invincibility","input":"←, →, Z","note":""},{"id":"jade-s5","cat":"Especiales","name":"Shadow Kick","input":"↓, →, C","note":""},{"id":"jade-s6","cat":"Especiales","name":"Second Chance","input":"←, ←, →, A","note":""},{"id":"jade-f1","cat":"Remates","name":"Fatality 1","input":"↑, ↑, ↓, →, X","note":"Distancia: cerca"},{"id":"jade-f2","cat":"Remates","name":"Fatality 2","input":"Y, Y, Y, B, Y","note":"Distancia: cerca"},{"id":"jade-f3","cat":"Remates","name":"Animality","input":"→, ↓, →, →, C","note":""},{"id":"jade-f4","cat":"Remates","name":"Babality","input":"↓, ↓, →, ↓, Z","note":""},{"id":"jade-f5","cat":"Remates","name":"Friendship","input":"←, ↓, ←, ←, Z","note":""},{"id":"jade-f6","cat":"Remates","name":"Brutality","input":"X, C, X, A, Z, Z, C, B, B, X, Z","note":""},{"id":"jade-f7","cat":"Remates","name":"Stage","input":"←, →, ↓, Y","note":""},{"id":"jade-c1","cat":"Combos","name":"Combo 22%","input":"X, X, ↓ + A, ↓ + X","note":""},{"id":"jade-c2","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""},{"id":"jade-c3","cat":"Combos","name":"Combo 25%","input":"X, X, ↓ + A, C, Z, ← + C, ← + Z","note":""}]},{"id":"klassic-kung-lao","name":"Klassic Kung Lao","moves":[{"id":"kkl-s1","cat":"Especiales","name":"Shield Spin","input":"↑, ↑, C","note":"Tocá C seguido para seguir girando"},{"id":"kkl-s2","cat":"Especiales","name":"Torpedo","input":"←, ←, →","note":""},{"id":"kkl-s3","cat":"Especiales","name":"Hat Throw","input":"←, →, A","note":""},{"id":"kkl-s4","cat":"Especiales","name":"Teleport","input":"↓, ↑","note":""},{"id":"kkl-s5","cat":"Especiales","name":"Dive Kick","input":"↓ + Z","note":"En el aire"},{"id":"kkl-f1","cat":"Remates","name":"Fatality 1","input":"[Mantener] A, ←, ←, →, [soltar] A","note":"Distancia: pantalla completa"},{"id":"kkl-f2","cat":"Remates","name":"Babality","input":"→, →, ←, ←, Z","note":""},{"id":"kkl-f3","cat":"Remates","name":"Friendship","input":"←, ←, ←, ↓, Z","note":"Distancia: barrida"},{"id":"kkl-f4","cat":"Remates","name":"Brutality","input":"X, A, Z, Z, A, A, A, C, C, B, X","note":""},{"id":"kkl-f5","cat":"Remates","name":"Stage","input":"→, →, →, X","note":""},{"id":"kkl-c1","cat":"Combos","name":"Combo 27%","input":"X, A, A, ↓ + A","note":""},{"id":"kkl-c2","cat":"Combos","name":"Combo 30%","input":"Z, C, Z, Z, ← + Z","note":""}]},{"id":"mileena","name":"Mileena","moves":[{"id":"mil-s1","cat":"Especiales","name":"Sai Toss","input":"[Mantener] X [2 segundos], [soltar]","note":""},{"id":"mil-s2","cat":"Especiales","name":"Air Kick","input":"→, →, C","note":""},{"id":"mil-s3","cat":"Especiales","name":"Ground Roll","input":"←, ←, ↓, Z","note":""},{"id":"mil-f1","cat":"Remates","name":"Fatality 1","input":"←, ←, ←, →, C","note":"Distancia: pantalla completa"},{"id":"mil-f2","cat":"Remates","name":"Fatality 2","input":"↓, →, ↓, →, A","note":"Distancia: cerca"},{"id":"mil-f3","cat":"Remates","name":"Animality","input":"→, ↓, ↓, →, Z","note":"Distancia: cerca"},{"id":"mil-f4","cat":"Remates","name":"Babality","input":"↓, ↓, →, →, X","note":""},{"id":"mil-f5","cat":"Remates","name":"Friendship","input":"↓, ↓, ←, →, X","note":""},{"id":"mil-f6","cat":"Remates","name":"Brutality","input":"X, A, A, X, B, Z, C, C, Z, B, X, A","note":""},{"id":"mil-f7","cat":"Remates","name":"Stage","input":"↓, ↓, ↓, A","note":""},{"id":"mil-c1","cat":"Combos","name":"Combo 22%","input":"X, X, ↑ + A, ↓ + A","note":""},{"id":"mil-c2","cat":"Combos","name":"Combo 23%","input":"Z, Z, ↑ + C, ↑ + Z","note":""},{"id":"mil-c3","cat":"Combos","name":"Combo 30%","input":"X, X, Z, Z, ↑ + C, ↑ + Z","note":""},{"id":"mil-c4","cat":"Combos","name":"Combo 24%","input":"X, X, Z, Z, ↓ - → + C","note":""},{"id":"mil-c5","cat":"Combos","name":"Combo 16%","input":"Z, Z, ↓ - → + C","note":""}]},{"id":"klassic-sub-zero","name":"Klassic Sub-Zero","moves":[{"id":"klassic-sub-zero-1","cat":"Especiales","name":"Ice Blast","input":"↓, →, A","note":""},{"id":"klassic-sub-zero-2","cat":"Especiales","name":"Ice Rain","input":"↓, →, X","note":""},{"id":"klassic-sub-zero-3","cat":"Especiales","name":"Near Ice Rain","input":"↓, →, ←, X","note":""},{"id":"klassic-sub-zero-4","cat":"Especiales","name":"Far Ice Rain","input":"↓, ←, →, X","note":""},{"id":"klassic-sub-zero-5","cat":"Especiales","name":"Sub-Xerox","input":"↓, ←, A","note":"También en el aire"},{"id":"klassic-sub-zero-6","cat":"Especiales","name":"Ground Freeze","input":"↓, ←, C","note":""},{"id":"klassic-sub-zero-7","cat":"Especiales","name":"Ground Slide","input":"← + A + B + C","note":""},{"id":"klassic-sub-zero-8","cat":"Remates","name":"Fatality 1","input":"↓, ↓, ↓, →, X","note":"Distancia: cerca"},{"id":"klassic-sub-zero-9","cat":"Remates","name":"Fatality 2","input":"↓, →, →, →, X","note":"Distancia: cerca"},{"id":"klassic-sub-zero-10","cat":"Remates","name":"Animality","input":"←, ←, →, ↓, A","note":"Distancia: cerca"},{"id":"klassic-sub-zero-11","cat":"Remates","name":"Babality","input":"↓, →, →, Z","note":""},{"id":"klassic-sub-zero-12","cat":"Remates","name":"Friendship","input":"Z, Y, Y, ↑","note":"Distancia: cerca"},{"id":"klassic-sub-zero-13","cat":"Remates","name":"Brutality 1","input":"X, A, X, B, C, C, Z, Z, A, X, A","note":""},{"id":"klassic-sub-zero-14","cat":"Remates","name":"Brutality 2","input":"X, C, Z, A, X, Z, Z, X, X, A","note":""},{"id":"klassic-sub-zero-15","cat":"Remates","name":"Stage","input":"→, ↓, →, →, X","note":""},{"id":"klassic-sub-zero-16","cat":"Combos","name":"Combo 26%","input":"X, X, C, ← + Z, → + C","note":""},{"id":"klassic-sub-zero-17","cat":"Combos","name":"Combo 19%","input":"C, ← + Z, → + C","note":""},{"id":"klassic-sub-zero-18","cat":"Combos","name":"Combo 22%","input":"X, X, ↓ + A, ↓ + X","note":""}]},{"id":"klassic-jax","name":"Klassic Jax","moves":[{"id":"klassic-jax-1","cat":"Especiales","name":"Energy Wave","input":"→, ↓, ←, Z","note":""},{"id":"klassic-jax-2","cat":"Especiales","name":"Air Energy Wave","input":"→, ↓, Z","note":"En el aire"},{"id":"klassic-jax-3","cat":"Especiales","name":"Backbreaker","input":"B","note":"En el aire, cerca"},{"id":"klassic-jax-4","cat":"Especiales","name":"Gotcha Grab","input":"→, →, A","note":"Tocá A seguido para más golpes"},{"id":"klassic-jax-5","cat":"Especiales","name":"Ground Slam","input":"[Mantener] C [3 segundos], [soltar] C","note":""},{"id":"klassic-jax-6","cat":"Especiales","name":"Quad Throw","input":"[Agarre], X [repetidamente]","note":""},{"id":"klassic-jax-7","cat":"Remates","name":"Fatality 1","input":"[Mantener] A, →, →, →, [soltar] A","note":"Distancia: cerca"},{"id":"klassic-jax-8","cat":"Remates","name":"Babality","input":"↓, ↑, ↓, ↑, C","note":""},{"id":"klassic-jax-9","cat":"Remates","name":"Friendship","input":"↓, ↓, ↑, ↑, C","note":"Distancia: barrida"},{"id":"klassic-jax-10","cat":"Remates","name":"Brutality","input":"X, X, B, Z, A, A, X, B, Z, Z, X","note":""},{"id":"klassic-jax-11","cat":"Remates","name":"Stage","input":"↑, ↑, ↓, C","note":""},{"id":"klassic-jax-12","cat":"Combos","name":"Combo 28%","input":"X, X, X, A, ← + X","note":""},{"id":"klassic-jax-13","cat":"Combos","name":"Combo 28%","input":"Z, C, C, Z, C, ← + Z","note":""}]},{"id":"sektor","name":"Sektor","moves":[{"id":"sektor-1","cat":"Especiales","name":"Straight Missile","input":"→, →, A","note":""},{"id":"sektor-2","cat":"Especiales","name":"Homing Missile","input":"→, ↓, ←, X","note":""},{"id":"sektor-3","cat":"Especiales","name":"Teleport Punch","input":"→, →, C","note":""},{"id":"sektor-4","cat":"Especiales","name":"Double Missile","input":"←, ←, →, A","note":""},{"id":"sektor-5","cat":"Remates","name":"Fatality 1","input":"A, Y, Y, B","note":"Distancia: barrida"},{"id":"sektor-6","cat":"Remates","name":"Fatality 2","input":"→, →, →, ←, B","note":"Distancia: más de media pantalla"},{"id":"sektor-7","cat":"Remates","name":"Animality","input":"→, →, ↓, ↑","note":"Distancia: cerca"},{"id":"sektor-8","cat":"Remates","name":"Babality","input":"←, ↓, ↓, ↓, Z","note":"Distancia: cerca"},{"id":"sektor-9","cat":"Remates","name":"Friendship","input":"Y, Y, Y, ↓","note":"Distancia: media pantalla"},{"id":"sektor-10","cat":"Remates","name":"Brutality","input":"X, X, B, B, Z, Z, C, C, A, A, X","note":""},{"id":"sektor-11","cat":"Remates","name":"Stage","input":"Y, Y, Y, ↓","note":""},{"id":"sektor-12","cat":"Combos","name":"Combo 15%","input":"Z, Z","note":""},{"id":"sektor-13","cat":"Combos","name":"Combo 22%","input":"X, X, Z, ← + Z","note":""},{"id":"sektor-14","cat":"Combos","name":"Combo 26%","input":"X, X, Z, Z, ← + Z","note":""},{"id":"sektor-15","cat":"Combos","name":"Combo 18%","input":"X, X, ↓ + A","note":""}]},{"id":"human-smoke","name":"Human Smoke","moves":[{"id":"human-smoke-1","cat":"Especiales","name":"Spear","input":"←, ←, A","note":""},{"id":"human-smoke-2","cat":"Especiales","name":"Teleport Punch","input":"↓, ←, X","note":"También en el aire"},{"id":"human-smoke-3","cat":"Especiales","name":"Air Throw","input":"B","note":"En el aire"},{"id":"human-smoke-4","cat":"Remates","name":"Fatality 1","input":"→, →, ←, Y","note":"Distancia: fuera de la barrida"},{"id":"human-smoke-5","cat":"Remates","name":"Fatality 2","input":"Y, B, Y, Y, Z","note":"Distancia: fuera de la barrida"},{"id":"human-smoke-6","cat":"Remates","name":"Animality","input":"→, →, →, ←, Z","note":"Distancia: media pantalla"},{"id":"human-smoke-7","cat":"Remates","name":"Babality","input":"←, ←, →, Y","note":""},{"id":"human-smoke-8","cat":"Remates","name":"Friendship","input":"↓, →, →, →, Y","note":""},{"id":"human-smoke-9","cat":"Remates","name":"Brutality","input":"X, X, B, C, Z, X, Z, X, Z, A, C","note":""},{"id":"human-smoke-10","cat":"Remates","name":"Stage","input":"→, ↑, ↑, A","note":""},{"id":"human-smoke-11","cat":"Combos","name":"Combo 15%","input":"Z, A","note":""},{"id":"human-smoke-12","cat":"Combos","name":"Combo 18%","input":"Z, ↓ + A, ↓ + X","note":""},{"id":"human-smoke-13","cat":"Combos","name":"Combo 19%","input":"X, X, ↑ + A","note":""},{"id":"human-smoke-14","cat":"Combos","name":"Combo 24%","input":"X, X, Z, ← + Z","note":""},{"id":"human-smoke-15","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""}]},{"id":"liu-kang","name":"Liu Kang","moves":[{"id":"liu-kang-1","cat":"Especiales","name":"High Fireball","input":"→, →, X","note":""},{"id":"liu-kang-2","cat":"Especiales","name":"Low Fireball","input":"→, →, A","note":""},{"id":"liu-kang-3","cat":"Especiales","name":"Flying Kick","input":"→, →, Z","note":""},{"id":"liu-kang-4","cat":"Especiales","name":"Bicycle Kick","input":"[Mantener] C [3 segundos], [soltar]","note":""},{"id":"liu-kang-5","cat":"Especiales","name":"Super Kick","input":"[Mantener] C, ←, →, [soltar] C","note":""},{"id":"liu-kang-6","cat":"Remates","name":"Fatality 1","input":"→, →, ↓, ↓, C","note":""},{"id":"liu-kang-7","cat":"Remates","name":"Fatality 2","input":"↑, ↓, ↑, ↑, B + R","note":""},{"id":"liu-kang-8","cat":"Remates","name":"Animality","input":"↓, ↓, ↑","note":"Distancia: barrida"},{"id":"liu-kang-9","cat":"Remates","name":"Babality","input":"↓, ↓, ↓, Z","note":""},{"id":"liu-kang-10","cat":"Remates","name":"Friendship","input":"Y, Y, Y, ↓ + Y","note":""},{"id":"liu-kang-11","cat":"Remates","name":"Brutality","input":"X, A, X, B, C, Z, C, Z, A, A, X","note":""},{"id":"liu-kang-12","cat":"Remates","name":"Stage","input":"Y, B, B, C","note":""},{"id":"liu-kang-13","cat":"Combos","name":"Combo 13%","input":"X, X, ← + A","note":""},{"id":"liu-kang-14","cat":"Combos","name":"Combo 22%","input":"Z, C, Z, C","note":""},{"id":"liu-kang-15","cat":"Combos","name":"Combo 25%","input":"X, C, C, Z, C","note":""},{"id":"liu-kang-16","cat":"Combos","name":"Combo 28%","input":"X, X, B, C, C, Z, C","note":""}]},{"id":"rain","name":"Rain","moves":[{"id":"rain-1","cat":"Especiales","name":"Mind Control Orb","input":"↓, →, X","note":""},{"id":"rain-2","cat":"Especiales","name":"Super Roundhouse Kick","input":"← + Z","note":""},{"id":"rain-3","cat":"Especiales","name":"Lighting Grab","input":"←, ←, X","note":""},{"id":"rain-4","cat":"Remates","name":"Fatality 1","input":"→, →, ↓, X","note":"Distancia: cerca"},{"id":"rain-5","cat":"Remates","name":"Fatality 2","input":"↓, ↓, ←, →, Z","note":"Distancia: barrida"},{"id":"rain-6","cat":"Remates","name":"Animality","input":"B, B, Y, Y, B","note":"Distancia: cerca"},{"id":"rain-7","cat":"Remates","name":"Babality","input":"→, ←, ←, X","note":""},{"id":"rain-8","cat":"Remates","name":"Friendship","input":"→, →, →, A","note":""},{"id":"rain-9","cat":"Remates","name":"Brutality","input":"X, X, B, C, Z, B, X, Z, X, A","note":""},{"id":"rain-10","cat":"Remates","name":"Stage","input":"→, ↓, →, A","note":""},{"id":"rain-11","cat":"Combos","name":"Combo 22%","input":"X, X, A, X","note":""},{"id":"rain-12","cat":"Combos","name":"Combo 24%","input":"Z, Z, C, Z, ← + Z","note":""},{"id":"rain-13","cat":"Combos","name":"Combo 23%","input":"Z, Z, A, X","note":""}]},{"id":"kano","name":"Kano","moves":[{"id":"kano-1","cat":"Especiales","name":"Sword Toss","input":"↓, ← + X","note":""},{"id":"kano-2","cat":"Especiales","name":"Slice Upercut","input":"↓, → + X","note":""},{"id":"kano-3","cat":"Especiales","name":"Ball Roll","input":"[Mantener] C [3 segundos], [soltar]","note":""},{"id":"kano-4","cat":"Especiales","name":"Upwards Ball Roll","input":"→, ↓, → + Z","note":""},{"id":"kano-5","cat":"Especiales","name":"Psycho Ball Roll","input":"→, ↓, → + C","note":""},{"id":"kano-6","cat":"Especiales","name":"Violent Grab","input":"↓, → + A","note":""},{"id":"kano-7","cat":"Especiales","name":"Throw (In Air)","input":"B","note":""},{"id":"kano-8","cat":"Remates","name":"Fatality 1","input":"[Mantener] A, →, ↓, ↓, →, [soltar] A","note":"Distancia: cerca"},{"id":"kano-9","cat":"Remates","name":"Fatality 2","input":"A, B, B, Z","note":"Distancia: barrida"},{"id":"kano-10","cat":"Remates","name":"Animality","input":"[Mantener] X, B, B, B","note":"Distancia: cerca"},{"id":"kano-11","cat":"Remates","name":"Babality","input":"→, →, ↓, ↓, C","note":""},{"id":"kano-12","cat":"Remates","name":"Friendship","input":"C, Y, Y, Z","note":""},{"id":"kano-13","cat":"Remates","name":"Brutality","input":"X, A, B, A, X, B, Z, C, B, Z, C","note":""},{"id":"kano-14","cat":"Remates","name":"Stage","input":"↑, ↑, ←, C","note":""},{"id":"kano-15","cat":"Combos","name":"Combo 15%","input":"Z, A","note":""},{"id":"kano-16","cat":"Combos","name":"Combo 19%","input":"Z, ↓ + A, ↓ + X","note":""},{"id":"kano-17","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""},{"id":"kano-18","cat":"Combos","name":"Combo 18%","input":"X, X, ← + A","note":""},{"id":"kano-19","cat":"Combos","name":"Combo 22%","input":"X, X, ↓ + A, ↓ + X","note":""},{"id":"kano-20","cat":"Combos","name":"Combo 26%","input":"X, X, Z, C, ← + Z","note":""}]},{"id":"goro","name":"Goro","moves":[{"id":"goro-1","cat":"Especiales","name":"Grab & Pound","input":"→, →, X","note":""},{"id":"goro-2","cat":"Especiales","name":"Spinning Fists","input":"←, ←, →, Z","note":""},{"id":"goro-3","cat":"Especiales","name":"Fireball","input":"←, ←, ←, A","note":""},{"id":"goro-4","cat":"Especiales","name":"Roar","input":"↓, ↓, C","note":""}]},{"id":"klassic-rayden","name":"Klassic Rayden","moves":[{"id":"klassic-rayden-1","cat":"Especiales","name":"Torpedo","input":"←, ←, →","note":"También en el aire"},{"id":"klassic-rayden-2","cat":"Especiales","name":"Lightning","input":"↓, →, A","note":""},{"id":"klassic-rayden-3","cat":"Especiales","name":"Teleport","input":"↓, ↑","note":""},{"id":"klassic-rayden-4","cat":"Remates","name":"Fatality 1","input":"→, →, ←, ←, ←, X","note":"Distancia: barrida"},{"id":"klassic-rayden-5","cat":"Remates","name":"Babality","input":"↑, ↑, ↓, Z","note":"Distancia: más allá de la barrida"},{"id":"klassic-rayden-6","cat":"Remates","name":"Brutality","input":"X, X, X, X, B, B, Z, Z, Z, B, A, X, X","note":""},{"id":"klassic-rayden-7","cat":"Remates","name":"Stage","input":"↓, ↓, →, Z","note":"Distancia: cerca"},{"id":"klassic-rayden-8","cat":"Combos","name":"Combo 19%","input":"X, ↓ + A, ↓ + A, ↓ + A","note":""},{"id":"klassic-rayden-9","cat":"Combos","name":"Combo 19%","input":"C, ← + Z, ← + Z","note":""}]},{"id":"shao-kahn","name":"Shao Kahn","moves":[{"id":"shao-kahn-1","cat":"Especiales","name":"Hammer","input":"←, →, X","note":""},{"id":"shao-kahn-2","cat":"Especiales","name":"Fireball","input":"←, ←, →, A","note":""},{"id":"shao-kahn-3","cat":"Especiales","name":"Grab and Smack","input":"→, →, X","note":""},{"id":"shao-kahn-4","cat":"Especiales","name":"Shoulder","input":"↓, →, A","note":""},{"id":"shao-kahn-5","cat":"Especiales","name":"Upwards Shoulder","input":"↓, →, X","note":""},{"id":"shao-kahn-6","cat":"Especiales","name":"Insult","input":"↓, ↓, C","note":""},{"id":"shao-kahn-7","cat":"Especiales","name":"Laugh","input":"↓, ↓, Z","note":""},{"id":"shao-kahn-8","cat":"Remates","name":"Fatality","input":"→, →, ←, X","note":"Distancia: barrida"}]},{"id":"striker","name":"Striker","moves":[{"id":"striker-1","cat":"Especiales","name":"Rushing Attack","input":"→, →, Z","note":""},{"id":"striker-2","cat":"Especiales","name":"Baton Takedown","input":"→, ←, A","note":""},{"id":"striker-3","cat":"Especiales","name":"Single Bomb Low","input":"↓, ←, A","note":""},{"id":"striker-4","cat":"Especiales","name":"Single Bomb High","input":"↓, ←, X","note":""},{"id":"striker-5","cat":"Especiales","name":"Double Bomb Low","input":"→, ↓, ←, A","note":""},{"id":"striker-6","cat":"Especiales","name":"Double Bomb High","input":"→, ↓, ←, X","note":""},{"id":"striker-7","cat":"Especiales","name":"The Gat","input":"←, →, X","note":""},{"id":"striker-8","cat":"Remates","name":"Fatality 1","input":"↓, →, ↓, →, B","note":"Distancia: cerca"},{"id":"striker-9","cat":"Remates","name":"Fatality 2","input":"→, →, →, C","note":"Distancia: pantalla completa"},{"id":"striker-10","cat":"Remates","name":"Animality","input":"Y, Y, Y, B","note":"Distancia: barrida"},{"id":"striker-11","cat":"Remates","name":"Babality","input":"↓, →, →, ←, X","note":""},{"id":"striker-12","cat":"Remates","name":"Friendship","input":"A, Y, Y, A","note":""},{"id":"striker-13","cat":"Remates","name":"Brutality","input":"X, A, Z, C, X, A, C, Z, X, C, C","note":""},{"id":"striker-14","cat":"Remates","name":"Stage","input":"→, ↑, ↑, Z","note":""},{"id":"striker-15","cat":"Combos","name":"Combo 18%","input":"X, X, A","note":""},{"id":"striker-16","cat":"Combos","name":"Combo 23%","input":"Z, X, X, A","note":""},{"id":"striker-17","cat":"Combos","name":"Combo 23%","input":"Z, C, ← + A, ← + Z","note":""},{"id":"striker-18","cat":"Combos","name":"Combo 19%","input":"Z, C, ← + Z","note":""}]},{"id":"noob-saibot","name":"Noob Saibot","moves":[{"id":"noob-saibot-1","cat":"Especiales","name":"Clone Throw","input":"→, →, X","note":""},{"id":"noob-saibot-2","cat":"Especiales","name":"Teleport Slam","input":"↓, ↑","note":""},{"id":"noob-saibot-3","cat":"Especiales","name":"No Block Ball","input":"↓, →, A","note":""},{"id":"noob-saibot-4","cat":"Remates","name":"Fatality 1","input":"←, ←, →, →, Z","note":"Distancia: barrida"},{"id":"noob-saibot-5","cat":"Remates","name":"Fatality 2","input":"↓, ↓, ↑, Y","note":"Distancia: barrida"},{"id":"noob-saibot-6","cat":"Remates","name":"Animality","input":"←, →, ←, →, Z","note":"Distancia: barrida"},{"id":"noob-saibot-7","cat":"Remates","name":"Babality","input":"→, →, →, A","note":""},{"id":"noob-saibot-8","cat":"Remates","name":"Friendship","input":"→, →, ←, X","note":"Distancia: pantalla completa"},{"id":"noob-saibot-9","cat":"Remates","name":"Brutality","input":"X, C, A, B, C, Z, X, A, B, C, Z","note":""},{"id":"noob-saibot-10","cat":"Remates","name":"Stage","input":"→, ↓, →, B","note":""},{"id":"noob-saibot-11","cat":"Combos","name":"Combo 22%","input":"X, X, A, Z","note":""},{"id":"noob-saibot-12","cat":"Combos","name":"Combo 23%","input":"C, C, C, C","note":""}]},{"id":"scorpion","name":"Scorpion","moves":[{"id":"scorpion-1","cat":"Especiales","name":"Spear","input":"←, ←, A","note":""},{"id":"scorpion-2","cat":"Especiales","name":"Teleport Punch","input":"↓, ←, X","note":"También en el aire"},{"id":"scorpion-3","cat":"Especiales","name":"Forward Teleport Punch","input":"↓, →, X","note":"También en el aire"},{"id":"scorpion-4","cat":"Especiales","name":"Air Throw","input":"B","note":"En el aire"},{"id":"scorpion-5","cat":"Remates","name":"Fatality 1","input":"↓, ↓, ↑, Z","note":"Distancia: más allá de la barrida"},{"id":"scorpion-6","cat":"Remates","name":"Fatality 2","input":"→, →, ←, A","note":"Distancia: más allá de la barrida"},{"id":"scorpion-7","cat":"Remates","name":"Fatality 3","input":"→, →, ↓, ↑, Y","note":"Distancia: cerca"},{"id":"scorpion-8","cat":"Remates","name":"Animality","input":"→, ↑, ↑, Z","note":"Distancia: cerca"},{"id":"scorpion-9","cat":"Remates","name":"Babality","input":"↓, ←, ←, →, X","note":""},{"id":"scorpion-10","cat":"Remates","name":"Friendship","input":"←, →, →, ←, C","note":"Distancia: cerca"},{"id":"scorpion-11","cat":"Remates","name":"Brutality","input":"X, X, B, Z, Z, C, Z, X, X, A, X","note":""},{"id":"scorpion-12","cat":"Remates","name":"Stage","input":"→, ↑, ↑, A","note":""},{"id":"scorpion-13","cat":"Combos","name":"Combo 24%","input":"X, X, Z, ← + Z","note":""},{"id":"scorpion-14","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, C","note":""},{"id":"scorpion-15","cat":"Combos","name":"Combo 18%","input":"X, X, ↑ + A","note":""}]},{"id":"klassic-kano","name":"Klassic Kano","moves":[{"id":"klassic-kano-1","cat":"Especiales","name":"Roll Spin","input":"[Mantener] B, [360°], [soltar] B","note":""},{"id":"klassic-kano-2","cat":"Especiales","name":"Knife Throw","input":"[Mantener] B, ←, →","note":""},{"id":"klassic-kano-3","cat":"Especiales","name":"Knife Spin","input":"←, →, X","note":"Tocá X seguido para girar más rápido"},{"id":"klassic-kano-4","cat":"Remates","name":"Fatality 1","input":"←, ↓, →, A","note":"Distancia: cerca"},{"id":"klassic-kano-5","cat":"Remates","name":"Babality","input":"←, ←, ↓, ↓, C","note":"Distancia: más allá de la barrida"},{"id":"klassic-kano-6","cat":"Remates","name":"Brutality","input":"X, X, B, Z, Z, C, Z, X, X, A, X","note":""},{"id":"klassic-kano-7","cat":"Remates","name":"Stage","input":"←, →, →, B","note":""},{"id":"klassic-kano-8","cat":"Combos","name":"Combo 22%","input":"X, X, X, X","note":""},{"id":"klassic-kano-9","cat":"Combos","name":"Combo 21%","input":"C, C, Z, → + Z","note":""},{"id":"klassic-kano-10","cat":"Combos","name":"Combo 19%","input":"C, C, Z","note":""}]},{"id":"jax","name":"Jax","moves":[{"id":"jax-1","cat":"Especiales","name":"Bionic Rush","input":"→, →, Z","note":""},{"id":"jax-2","cat":"Especiales","name":"Single Shot","input":"←, →, X","note":""},{"id":"jax-3","cat":"Especiales","name":"Double Shot","input":"→, →, ←, ←, X","note":""},{"id":"jax-4","cat":"Especiales","name":"Ground Smash","input":"[Mantener] C [3 segundos], [soltar]","note":""},{"id":"jax-5","cat":"Especiales","name":"Gotcha Grab","input":"→, →, A","note":""},{"id":"jax-6","cat":"Especiales","name":"Quad Slam","input":"[Agarre], X [repetidamente]","note":""},{"id":"jax-7","cat":"Especiales","name":"Backbreaker","input":"B","note":"En el aire"},{"id":"jax-8","cat":"Remates","name":"Fatality 1","input":"[Mantener] B, ↑, ↓, →, ↑","note":"Distancia: cerca"},{"id":"jax-9","cat":"Remates","name":"Fatality 2","input":"Y, B, Y, Y, C","note":"Distancia: pantalla completa"},{"id":"jax-10","cat":"Remates","name":"Animality","input":"[Mantener] A, →, →, ↓, →, [soltar] A","note":"Distancia: cerca"},{"id":"jax-11","cat":"Remates","name":"Babality","input":"↓, ↓, ↓, C","note":""},{"id":"jax-12","cat":"Remates","name":"Friendship","input":"C, Y, Y, C","note":""},{"id":"jax-13","cat":"Remates","name":"Brutality","input":"X, X, X, B, A, X, X, X, B, A, X","note":""},{"id":"jax-14","cat":"Remates","name":"Stage","input":"↓, →, ↓, A","note":""},{"id":"jax-15","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""},{"id":"jax-16","cat":"Combos","name":"Combo 24%","input":"X, X, B, A, ← + X","note":""},{"id":"jax-17","cat":"Combos","name":"Combo 33%","input":"Z, Z, ↓ + X, X, B, A, ← + X","note":""}]},{"id":"shang-tsung","name":"Shang Tsung","moves":[{"id":"shang-tsung-1","cat":"Especiales","name":"Single Fireball","input":"←, ← + X","note":""},{"id":"shang-tsung-2","cat":"Especiales","name":"Double Fireballs","input":"←, ←, → + X","note":""},{"id":"shang-tsung-3","cat":"Especiales","name":"Triple Fireballs","input":"←, ←, →, → + X","note":""},{"id":"shang-tsung-4","cat":"Especiales","name":"Triple Ground Fireballs","input":"→, →, ←, ← + C","note":""},{"id":"shang-tsung-5","cat":"Remates","name":"Fatality 1","input":"[Mantener] A, ↓, →, →, ↓","note":"Distancia: cerca"},{"id":"shang-tsung-6","cat":"Remates","name":"Fatality 2","input":"[Mantener] A, Y, B, Y, B","note":"Distancia: cerca"},{"id":"shang-tsung-7","cat":"Remates","name":"Animality","input":"[Mantener] X, Y, Y, Y","note":"Distancia: cerca"},{"id":"shang-tsung-8","cat":"Remates","name":"Babality","input":"Y, Y, Y, C","note":""},{"id":"shang-tsung-9","cat":"Remates","name":"Friendship","input":"C, Y, Y, ↓","note":"Distancia: barrida"},{"id":"shang-tsung-10","cat":"Remates","name":"Brutality","input":"X, B, B, B, C, X, A, A, B, Z, C","note":""},{"id":"shang-tsung-11","cat":"Remates","name":"Stage","input":"↑, ↑, ←, A","note":""},{"id":"shang-tsung-12","cat":"Combos","name":"Combo 22%","input":"X, X, A, ← + Z","note":""},{"id":"shang-tsung-13","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""},{"id":"shang-tsung-14","cat":"Combos","name":"Combo 27%","input":"C, X, X, A, ← + Z","note":""},{"id":"shang-tsung-15","cat":"Transformaciones","name":"Baraka","input":"↓, ↓, C","note":""},{"id":"shang-tsung-16","cat":"Transformaciones","name":"Johnny Cage","input":"←, ←, ↓, A","note":""},{"id":"shang-tsung-17","cat":"Transformaciones","name":"Kung Lao","input":"Y, Y, B, Y","note":""},{"id":"shang-tsung-18","cat":"Transformaciones","name":"Nightwolf","input":"↑, ↑, ↑","note":""},{"id":"shang-tsung-19","cat":"Transformaciones","name":"Noob Saibot","input":"→, ↓, ↓, ←, Z","note":""},{"id":"shang-tsung-20","cat":"Transformaciones","name":"Rayden","input":"↓, ←, →, C","note":""},{"id":"shang-tsung-21","cat":"Transformaciones","name":"Sindel","input":"←, ↓, ←, C","note":""},{"id":"shang-tsung-22","cat":"Transformaciones","name":"Sonya","input":"↓, ↓, ↓ + Y + A + B","note":""},{"id":"shang-tsung-23","cat":"Transformaciones","name":"Ermac","input":"↓, ↓, ↑","note":""},{"id":"shang-tsung-24","cat":"Transformaciones","name":"Classic Sub-Zero","input":"B, B, Y, Y","note":""},{"id":"shang-tsung-25","cat":"Transformaciones","name":"Cyrax","input":"B, B, B","note":""},{"id":"shang-tsung-26","cat":"Transformaciones","name":"Goro","input":"←, ←, ←, C","note":""},{"id":"shang-tsung-27","cat":"Transformaciones","name":"Human Smoke","input":"???","note":"La tarjeta no lo indica"},{"id":"shang-tsung-28","cat":"Transformaciones","name":"Jade","input":"→, →, ↓, ↓ + B","note":""},{"id":"shang-tsung-29","cat":"Transformaciones","name":"Jax","input":"→, →, ↓, A","note":""},{"id":"shang-tsung-30","cat":"Transformaciones","name":"Kabal","input":"A, B, Z","note":""},{"id":"shang-tsung-31","cat":"Transformaciones","name":"Kano","input":"→, ←, →, B","note":""},{"id":"shang-tsung-32","cat":"Transformaciones","name":"Kintaro","input":"[Mantener] A [3 segundos], [soltar] A","note":""},{"id":"shang-tsung-33","cat":"Transformaciones","name":"Kitana","input":"→, ↓, →, Y","note":""},{"id":"shang-tsung-34","cat":"Transformaciones","name":"Klassic Jax","input":"↓, →, ←, Z","note":""},{"id":"shang-tsung-35","cat":"Transformaciones","name":"Klassic Kano","input":"→, ↑, ←, ↓, →","note":"Vuelta de 360° hacia atrás"},{"id":"shang-tsung-36","cat":"Transformaciones","name":"Klassic Kung Lao","input":"←, ↓, ←, Z","note":""},{"id":"shang-tsung-37","cat":"Transformaciones","name":"Klassic Rayden","input":"←, ←, →, Y","note":""},{"id":"shang-tsung-38","cat":"Transformaciones","name":"Liu Kang","input":"↓, ←, ↑, →, ↓","note":"Vuelta de 360° hacia adelante"},{"id":"shang-tsung-39","cat":"Transformaciones","name":"Mileena","input":"Y, B, Z","note":""},{"id":"shang-tsung-40","cat":"Transformaciones","name":"Motaro","input":"→, ↓, ←, X","note":""},{"id":"shang-tsung-41","cat":"Transformaciones","name":"Rain","input":"Y, B, C","note":""},{"id":"shang-tsung-42","cat":"Transformaciones","name":"Reptile","input":"Y, B, B, Z","note":""},{"id":"shang-tsung-43","cat":"Transformaciones","name":"Scorpion","input":"↓, ↓, →, A","note":""},{"id":"shang-tsung-44","cat":"Transformaciones","name":"Sektor","input":"↓, →, ←, Y","note":""},{"id":"shang-tsung-45","cat":"Transformaciones","name":"Shao Kahn","input":"←, →, Z","note":"Solo en PC, PSX y Saturn"},{"id":"shang-tsung-46","cat":"Transformaciones","name":"Sheeva","input":"→, ↓, → + C","note":""},{"id":"shang-tsung-47","cat":"Transformaciones","name":"Smoke","input":"→, →, A","note":""},{"id":"shang-tsung-48","cat":"Transformaciones","name":"Stryker","input":"→, →, →, Z","note":""},{"id":"shang-tsung-49","cat":"Transformaciones","name":"Sub-Zero","input":"→, ↓, →, X","note":""}]},{"id":"ermac","name":"Ermac","moves":[{"id":"ermac-1","cat":"Especiales","name":"Mind Lift","input":"←, ↓, ←, Z","note":""},{"id":"ermac-2","cat":"Especiales","name":"Green Blast","input":"↓, ←, A","note":""},{"id":"ermac-3","cat":"Especiales","name":"Teleport Punch","input":"↓, ←, X","note":""},{"id":"ermac-4","cat":"Remates","name":"Fatality 1","input":"Y, B, Y, Y, Z","note":"Distancia: cerca"},{"id":"ermac-5","cat":"Remates","name":"Fatality 2","input":"↓, ↑, ↓, ↓, ↓, B","note":"Distancia: barrida"},{"id":"ermac-6","cat":"Remates","name":"Animality","input":"→, →, ←, ←, C","note":"Distancia: cerca"},{"id":"ermac-7","cat":"Remates","name":"Babality","input":"↓, ↓, ←, ←, X","note":""},{"id":"ermac-8","cat":"Remates","name":"Friendship","input":"→, →, →, X","note":""},{"id":"ermac-9","cat":"Remates","name":"Brutality","input":"X, X, A, B, Z, C, B, X, A, C, Z","note":""},{"id":"ermac-10","cat":"Remates","name":"Stage","input":"Y, Y, Y, Y, C","note":""},{"id":"ermac-11","cat":"Combos","name":"Combo 15%","input":"Z, A","note":""},{"id":"ermac-12","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""},{"id":"ermac-13","cat":"Combos","name":"Combo 19%","input":"X, X, ← + A, ↓, →, X","note":""},{"id":"ermac-14","cat":"Combos","name":"Combo 24%","input":"X, X, ← + A, Z, ← + C","note":""}]},{"id":"smoke","name":"Smoke","moves":[{"id":"smoke-1","cat":"Especiales","name":"Spear","input":"←, ←, A","note":""},{"id":"smoke-2","cat":"Especiales","name":"Teleport Upercut","input":"→, →, C","note":""},{"id":"smoke-3","cat":"Especiales","name":"Air Throw","input":"B","note":"En el aire"},{"id":"smoke-4","cat":"Especiales","name":"Invisibility","input":"[Mantener] B, ↑, ↑, Y","note":""},{"id":"smoke-5","cat":"Remates","name":"Fatality 1","input":"[Mantener] B, ↑, ↑, →, ↓","note":"Distancia: pantalla completa"},{"id":"smoke-6","cat":"Remates","name":"Fatality 2","input":"[Mantener] Y + B, ↓, ↓, →, ↑","note":"Distancia: barrida"},{"id":"smoke-7","cat":"Remates","name":"Animality","input":"↓, →, →, B","note":"Distancia: pantalla completa"},{"id":"smoke-8","cat":"Remates","name":"Babality","input":"↓, ↓, ←, ←, Z","note":""},{"id":"smoke-9","cat":"Remates","name":"Friendship","input":"Y, Y, Y, Z","note":"Distancia: pantalla completa"},{"id":"smoke-10","cat":"Remates","name":"Brutality","input":"X, C, C, Z, B, B, A, A, X, X, B, B","note":""},{"id":"smoke-11","cat":"Remates","name":"Stage","input":"→, →, ↓, C","note":""},{"id":"smoke-12","cat":"Combos","name":"Combo 26%","input":"X, X, C, Z, A","note":""},{"id":"smoke-13","cat":"Combos","name":"Combo 19%","input":"Z, Z, A","note":""},{"id":"smoke-14","cat":"Combos","name":"Combo 18%","input":"X, X, Z","note":""},{"id":"smoke-15","cat":"Combos","name":"Combo 18%","input":"X, X, ← + A","note":""}]},{"id":"sheeva","name":"Sheeva","moves":[{"id":"sheeva-1","cat":"Especiales","name":"Ground Stomp","input":"←, ↓, ←, Z","note":""},{"id":"sheeva-2","cat":"Especiales","name":"Fireball","input":"↓, →, X","note":""},{"id":"sheeva-3","cat":"Especiales","name":"Aerial Stomp","input":"↓, ↑","note":""},{"id":"sheeva-4","cat":"Remates","name":"Fatality 1","input":"→, ↓, ↓, →, A","note":"Distancia: cerca"},{"id":"sheeva-5","cat":"Remates","name":"Fatality 2","input":"[Mantener] Z, ←, →, →, [soltar] Z","note":"Distancia: cerca"},{"id":"sheeva-6","cat":"Remates","name":"Animality","input":"Y, B, B, B, B","note":"Distancia: cerca"},{"id":"sheeva-7","cat":"Remates","name":"Babality","input":"↓, ↓, ↓, ←, Z","note":""},{"id":"sheeva-8","cat":"Remates","name":"Friendship","input":"→, →, ↓, →, [pausa] + X","note":""},{"id":"sheeva-9","cat":"Remates","name":"Brutality","input":"X, A, B, C, Z, B, Z, C, B, A, X","note":""},{"id":"sheeva-10","cat":"Remates","name":"Stage","input":"↓, →, ↓, →, A","note":""},{"id":"sheeva-11","cat":"Combos","name":"Combo 25%","input":"X, X, A, → + X","note":""},{"id":"sheeva-12","cat":"Combos","name":"Combo 27%","input":"Z, Z, C, ← + Z","note":""},{"id":"sheeva-13","cat":"Combos","name":"Combo 42%","input":"X, X, A, Z, Z, C, ← + Z","note":""},{"id":"sheeva-14","cat":"Combos","name":"Combo 27%","input":"Z, Z, ← + X, ← + X [o] ← + A","note":""}]},{"id":"nightwolf","name":"Nightwolf","moves":[{"id":"nightwolf-1","cat":"Especiales","name":"Shoulder Ram","input":"→, →, →, C","note":""},{"id":"nightwolf-2","cat":"Especiales","name":"Arrow Shot","input":"↓, ←, A","note":""},{"id":"nightwolf-3","cat":"Especiales","name":"Hatchet Swipe","input":"↓, →, X","note":""},{"id":"nightwolf-4","cat":"Especiales","name":"Projectile Reflection","input":"←, ←, ←, Z","note":""},{"id":"nightwolf-5","cat":"Especiales","name":"Fast Shoulder Ram","input":"←, ←, →, Z","note":""},{"id":"nightwolf-6","cat":"Remates","name":"Fatality 1","input":"↑, ↑, ←, →, B","note":"Distancia: cerca"},{"id":"nightwolf-7","cat":"Remates","name":"Fatality 2","input":"←, ←, ↓, X","note":"Distancia: barrida"},{"id":"nightwolf-8","cat":"Remates","name":"Animality","input":"→, →, ↓, ↓","note":"Distancia: cerca"},{"id":"nightwolf-9","cat":"Remates","name":"Babality","input":"→, ←, →, ←, A","note":""},{"id":"nightwolf-10","cat":"Remates","name":"Friendship","input":"Y, Y, Y, ↓","note":"Distancia: barrida"},{"id":"nightwolf-11","cat":"Remates","name":"Brutality","input":"X, X, Z, C, C, B, B, A, A, X, Z","note":""},{"id":"nightwolf-12","cat":"Remates","name":"Stage","input":"R, R, B","note":""},{"id":"nightwolf-13","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""},{"id":"nightwolf-14","cat":"Combos","name":"Combo 23%","input":"X, X, A, ↓, → + X","note":""},{"id":"nightwolf-15","cat":"Combos","name":"Combo 22%","input":"X, X, A, Z","note":""},{"id":"nightwolf-16","cat":"Combos","name":"Combo 28%","input":"C, X, X, A, ↓, → + X","note":""},{"id":"nightwolf-17","cat":"Combos","name":"Combo 27%","input":"Z, X, X, A, Z","note":""}]},{"id":"kitana","name":"Kitana","moves":[{"id":"kitana-1","cat":"Especiales","name":"Fan Lift","input":"←, ←, ←, X","note":""},{"id":"kitana-2","cat":"Especiales","name":"Fan Toss","input":"→, →, X + A","note":"También en el aire"},{"id":"kitana-3","cat":"Especiales","name":"Air Punch","input":"↓, ←, X","note":""},{"id":"kitana-4","cat":"Remates","name":"Fatality 1","input":"Y, Y, B, B, C","note":"Distancia: cerca"},{"id":"kitana-5","cat":"Remates","name":"Fatality 2","input":"←, ↓, →, →, Z","note":"Distancia: cerca"},{"id":"kitana-6","cat":"Remates","name":"Animality","input":"↓, ↓, ↓, ↓ + Y","note":"Distancia: cerca y barrida"},{"id":"kitana-7","cat":"Remates","name":"Babality","input":"→, →, ↓, →, Z","note":""},{"id":"kitana-8","cat":"Remates","name":"Friendship","input":"↓, ←, →, →, A","note":""},{"id":"kitana-9","cat":"Remates","name":"Brutality","input":"X, X, B, Z, B, B, C, B, A, B, X, B","note":""},{"id":"kitana-10","cat":"Remates","name":"Stage","input":"→, ↓, ↓, C","note":""},{"id":"kitana-11","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""},{"id":"kitana-12","cat":"Combos","name":"Combo 25%","input":"X, X, ← + A, → + X","note":""}]},{"id":"kung-lao","name":"Kung Lao","moves":[{"id":"kung-lao-1","cat":"Especiales","name":"Hat Toss","input":"←, →, A","note":""},{"id":"kung-lao-2","cat":"Especiales","name":"Diving Kick","input":"↓ + Z","note":"En el aire"},{"id":"kung-lao-3","cat":"Especiales","name":"Spinning Shield","input":"→, ↓, →, Y, Y, Y","note":""},{"id":"kung-lao-4","cat":"Especiales","name":"Teleport Attack","input":"↓, ↑","note":""},{"id":"kung-lao-5","cat":"Especiales","name":"Double Teleport Attack","input":"↓, ↓, ↑","note":""},{"id":"kung-lao-6","cat":"Remates","name":"Fatality 1","input":"Y, B, Y, B, ↓","note":""},{"id":"kung-lao-7","cat":"Remates","name":"Fatality 2","input":"→, →, ←, ↓, X","note":"Distancia: cerca"},{"id":"kung-lao-8","cat":"Remates","name":"Animality","input":"Y, Y, Y, Y, B","note":"Distancia: cerca"},{"id":"kung-lao-9","cat":"Remates","name":"Babality","input":"↓, →, →, X","note":""},{"id":"kung-lao-10","cat":"Remates","name":"Friendship","input":"Y, A, Y, C","note":"Distancia: más allá de la barrida"},{"id":"kung-lao-11","cat":"Remates","name":"Brutality","input":"X, A, C, Z, B, X, A, C, Z, B, X","note":""},{"id":"kung-lao-12","cat":"Remates","name":"Stage","input":"↓, ↓, →, →, C","note":""},{"id":"kung-lao-13","cat":"Combos","name":"Combo 19%","input":"C, C, ← + Z","note":""},{"id":"kung-lao-14","cat":"Combos","name":"Combo 34%","input":"X, A, X, A, C, C, ← + Z","note":""},{"id":"kung-lao-15","cat":"Combos","name":"Combo 18%","input":"X, C, ← + Z","note":""}]},{"id":"sonya","name":"Sonya","moves":[{"id":"sonya-1","cat":"Especiales","name":"Energy Rings","input":"↓, →, A","note":""},{"id":"sonya-2","cat":"Especiales","name":"Wave Punch","input":"→, ←, X","note":""},{"id":"sonya-3","cat":"Especiales","name":"Bicycle Kick","input":"←, ←, ↓, Z","note":""},{"id":"sonya-4","cat":"Especiales","name":"Leg Throw","input":"↓ + A + B","note":""},{"id":"sonya-5","cat":"Remates","name":"Fatality 1","input":"[Mantener] B + Y, ↑, ↑, ←, ↓","note":"Distancia: media pantalla"},{"id":"sonya-6","cat":"Remates","name":"Fatality 2","input":"←, →, ↓, ↓, Y","note":"Distancia: más de media pantalla"},{"id":"sonya-7","cat":"Remates","name":"Animality","input":"[Mantener] A, ←, →, ↓, →, [soltar] A","note":"Distancia: cerca"},{"id":"sonya-8","cat":"Remates","name":"Babality","input":"↓, ↓, →, C","note":""},{"id":"sonya-9","cat":"Remates","name":"Friendship","input":"←, →, ←, ↓ + Y","note":""},{"id":"sonya-10","cat":"Remates","name":"Brutality","input":"X, C, B, X, C, B, X, A, B, Z, C","note":""},{"id":"sonya-11","cat":"Remates","name":"Stage","input":"→, →, ↓, X","note":""},{"id":"sonya-12","cat":"Combos","name":"Combo 22%","input":"X, X, A, ← + X","note":""},{"id":"sonya-13","cat":"Combos","name":"Combo 31%","input":"Z, Z, X, X, A, ← + X","note":""},{"id":"sonya-14","cat":"Combos","name":"Combo 27%","input":"Z, X, X, A, ← + X","note":""},{"id":"sonya-15","cat":"Combos","name":"Combo 23%","input":"Z, X, X, ↑ + A","note":""},{"id":"sonya-16","cat":"Combos","name":"Combo 18%","input":"X, X, ↑ + A","note":""},{"id":"sonya-17","cat":"Combos","name":"Combo 23%","input":"Z, X, X, ↑ + X","note":""},{"id":"sonya-18","cat":"Combos","name":"Combo 27%","input":"Z, Z, X, X, ↑ + A","note":""},{"id":"sonya-19","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""}]},{"id":"raiden","name":"Raiden","moves":[{"id":"raiden-1","cat":"Especiales","name":"Lighting Toss","input":"↓, → + A","note":""},{"id":"raiden-2","cat":"Especiales","name":"Reverse Lighting Toss","input":"↓, ← + A","note":""},{"id":"raiden-3","cat":"Especiales","name":"Teleport","input":"↓, ↑","note":""},{"id":"raiden-4","cat":"Especiales","name":"Torpedo","input":"←, ←, →","note":""},{"id":"raiden-5","cat":"Especiales","name":"Shocker","input":"[Mantener] X [3 segundos], [soltar]","note":""},{"id":"raiden-6","cat":"Remates","name":"Fatality 1","input":"[Mantener] X [8 segundos], [soltar]","note":"Distancia: cerca"},{"id":"raiden-7","cat":"Remates","name":"Fatality 2","input":"[Mantener] C [3 segundos], [soltar] C, B + C","note":"Distancia: cerca"},{"id":"raiden-8","cat":"Remates","name":"Animality","input":"↓, →, ↓, Z","note":"Distancia: barrida"},{"id":"raiden-9","cat":"Remates","name":"Babality","input":"↓, ↓, ↑, Z","note":""},{"id":"raiden-10","cat":"Remates","name":"Friendship","input":"↓, ←, →, Z","note":"Distancia: media pantalla"},{"id":"raiden-11","cat":"Remates","name":"Brutality","input":"X, X, C, C, C, Z, A, A, A, B, B","note":""},{"id":"raiden-12","cat":"Remates","name":"Stage","input":"↓, ↓, ↓, X","note":""},{"id":"raiden-13","cat":"Combos","name":"Combo 18%","input":"Z, C, ← + Z","note":""},{"id":"raiden-14","cat":"Combos","name":"Combo 19%","input":"X, X, A, A","note":"27% en N64"},{"id":"raiden-15","cat":"Combos","name":"Combo 36%","input":"X, X, A, → + X","note":"31% en N64"},{"id":"raiden-16","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""}]},{"id":"motaro","name":"Motaro","moves":[{"id":"motaro-1","cat":"Especiales","name":"Fireball","input":"→, ↓, ←, X","note":""},{"id":"motaro-2","cat":"Especiales","name":"Sweep","input":"← + C","note":""},{"id":"motaro-3","cat":"Especiales","name":"Grab and Smack","input":"→, →, X","note":""},{"id":"motaro-4","cat":"Especiales","name":"Teleport","input":"↓, ↑","note":""},{"id":"motaro-5","cat":"Remates","name":"Fatality","input":"→, →, →, Z","note":"Distancia: cerca"}]},{"id":"baraka","name":"Baraka","moves":[{"id":"baraka-1","cat":"Especiales","name":"Blade Fury","input":"←, ←, ←, A","note":""},{"id":"baraka-2","cat":"Especiales","name":"Head Swipe","input":"← + X","note":""},{"id":"baraka-3","cat":"Especiales","name":"Spark Toss","input":"↓, ←, X","note":""},{"id":"baraka-4","cat":"Especiales","name":"Blade Spin","input":"→, ↓, → + B","note":"Tocá B seguido y mantené ← o → para moverte"},{"id":"baraka-5","cat":"Remates","name":"Fatality 1","input":"←, ←, ←, X","note":"Distancia: cerca al empezar"},{"id":"baraka-6","cat":"Remates","name":"Fatality 2","input":"←, →, ↓, →, A","note":"Distancia: cerca al empezar"},{"id":"baraka-7","cat":"Remates","name":"Animality","input":"[Mantener] X, →, ←, ↓, →, [soltar] X","note":"Distancia: barrida"},{"id":"baraka-8","cat":"Remates","name":"Babality","input":"→, →, →, Z","note":""},{"id":"baraka-9","cat":"Remates","name":"Friendship","input":"↓, →, →, Z","note":""},{"id":"baraka-10","cat":"Remates","name":"Brutality","input":"X, X, X, A, A, B, Z, Z, C, C, B","note":""},{"id":"baraka-11","cat":"Remates","name":"Stage","input":"C, Y, Y, Y, Y","note":""},{"id":"baraka-12","cat":"Combos","name":"Combo 22%","input":"X, X, ← + X, → + X","note":""},{"id":"baraka-13","cat":"Combos","name":"Combo 23%","input":"Z, Z, C, ← + Z","note":""},{"id":"baraka-14","cat":"Combos","name":"Combo 23%","input":"Z, Z, ← + X, → + X","note":""},{"id":"baraka-15","cat":"Combos","name":"Combo 21%","input":"Z, Z, ← + X, ← + X, → + A","note":""}]},{"id":"kintaro","name":"Kintaro","moves":[{"id":"kintaro-1","cat":"Especiales","name":"Fireball","input":"←, ←, →, X","note":""},{"id":"kintaro-2","cat":"Especiales","name":"Teleport Stomp","input":"↓, ↑","note":""},{"id":"kintaro-3","cat":"Especiales","name":"Grab Smash","input":"→, →, X","note":""},{"id":"kintaro-4","cat":"Especiales","name":"Roar","input":"↓, ↓, C","note":""}]},{"id":"kabal","name":"Kabal","moves":[{"id":"kabal-1","cat":"Especiales","name":"Web Spin","input":"←, →, C","note":""},{"id":"kabal-2","cat":"Especiales","name":"Fireball","input":"←, ←, X","note":"También en el aire"},{"id":"kabal-3","cat":"Especiales","name":"Ground Saw","input":"←, ←, ←, Y","note":""},{"id":"kabal-4","cat":"Remates","name":"Fatality 1","input":"↓, ↓, ←, →, B","note":"Distancia: media pantalla"},{"id":"kabal-5","cat":"Remates","name":"Fatality 2","input":"Y, B, B, B, Z","note":"Distancia: cerca"},{"id":"kabal-6","cat":"Remates","name":"Animality","input":"[Mantener] X, →, →, ↓, →, [soltar] X","note":"Distancia: cerca"},{"id":"kabal-7","cat":"Remates","name":"Babality","input":"Y, Y, C","note":""},{"id":"kabal-8","cat":"Remates","name":"Friendship","input":"Y, C, Y, Y, ↑","note":""},{"id":"kabal-9","cat":"Remates","name":"Brutality","input":"X, B, C, C, C, Z, A, A, A, X, A","note":""},{"id":"kabal-10","cat":"Remates","name":"Stage","input":"B, B, Z","note":""},{"id":"kabal-11","cat":"Combos","name":"Combo 13%","input":"X, X, ↓ + X","note":""},{"id":"kabal-12","cat":"Combos","name":"Combo 15%","input":"C, C, X, X, ↓ + X","note":""},{"id":"kabal-13","cat":"Combos","name":"Combo 25%","input":"X, X, Z, ← + Z","note":""},{"id":"kabal-14","cat":"Combos","name":"Combo 17%","input":"X, X, ↓ + A, ↓ + X","note":""},{"id":"kabal-15","cat":"Combos","name":"Combo 17%","input":"C, C, X, X, ↓ + A, ↓ + X","note":""},{"id":"kabal-16","cat":"Combos","name":"Combo 18%","input":"C, C, X, X, Z, ← + Z","note":""},{"id":"kabal-17","cat":"Combos","name":"Combo 18%","input":"Z, C, ← + Z","note":""},{"id":"kabal-18","cat":"Combos","name":"Combo 24%","input":"Z, C, Z, ← + Z","note":""}]},{"id":"jhony-cage","name":"Jhony Cage","moves":[{"id":"jhony-cage-1","cat":"Especiales","name":"High Green Orb","input":"→, ↓, ←, X","note":""},{"id":"jhony-cage-2","cat":"Especiales","name":"Low Green Orb","input":"←, ↓, →, A","note":""},{"id":"jhony-cage-3","cat":"Especiales","name":"Shadow Upercut","input":"←, ↓, ←, X","note":""},{"id":"jhony-cage-4","cat":"Especiales","name":"Shadow Kick","input":"←, →, C","note":""},{"id":"jhony-cage-5","cat":"Especiales","name":"Red Shadow Kick","input":"←, ←, →, Z","note":""},{"id":"jhony-cage-6","cat":"Remates","name":"Fatality 1","input":"↓, ↓, →, →, A","note":"Distancia: cerca"},{"id":"jhony-cage-7","cat":"Remates","name":"Fatality 2","input":"↓, ↓, →, →, C","note":"Distancia: cerca"},{"id":"jhony-cage-8","cat":"Remates","name":"Animality","input":"↓, →, →, Z","note":"Distancia: cerca"},{"id":"jhony-cage-9","cat":"Remates","name":"Babality","input":"↓, →, ←, ←, Z","note":"Distancia: media pantalla"},{"id":"jhony-cage-10","cat":"Remates","name":"Friendship","input":"↓, ↓, ↓, ↓, C","note":""},{"id":"jhony-cage-11","cat":"Remates","name":"Brutality","input":"X, C, Z, A, X, Z, Z, X, X, A, X","note":""},{"id":"jhony-cage-12","cat":"Remates","name":"Stage","input":"↓, ←, →, →, Z","note":""},{"id":"jhony-cage-13","cat":"Combos","name":"Combo 27%","input":"Z, C, Z, C, C","note":""},{"id":"jhony-cage-14","cat":"Combos","name":"Combo 19%","input":"X, X, A, ↓ + A","note":""}]},{"id":"cyrax","name":"Cyrax","moves":[{"id":"cyrax-1","cat":"Especiales","name":"Far Bomb Toss","input":"[Mantener] C, →, →, Z","note":""},{"id":"cyrax-2","cat":"Especiales","name":"Near Bomb Toss","input":"[Mantener] C, ←, ←, Z","note":""},{"id":"cyrax-3","cat":"Especiales","name":"Teleport","input":"→, ↓, B","note":"También en el aire"},{"id":"cyrax-4","cat":"Especiales","name":"Green Net","input":"←, ←, C","note":""},{"id":"cyrax-5","cat":"Especiales","name":"Air Run","input":"↓, →, B","note":"Con el rival en el aire, apretá ← + A"},{"id":"cyrax-6","cat":"Remates","name":"Fatality 1","input":"↓, ↓, ↑, ↓, X","note":"Distancia: cerca"},{"id":"cyrax-7","cat":"Remates","name":"Fatality 2","input":"↓, ↓, →, ↑, Y","note":"Distancia: cerca"},{"id":"cyrax-8","cat":"Remates","name":"Animality","input":"↑, ↑, ↓, ↓","note":"Distancia: cerca"},{"id":"cyrax-9","cat":"Remates","name":"Babality","input":"→, →, ←, X","note":""},{"id":"cyrax-10","cat":"Remates","name":"Friendship","input":"Y, Y, Y, ↑","note":""},{"id":"cyrax-11","cat":"Remates","name":"Brutality","input":"X, Z, X, Z, Z, X, Z, X, Z, C, A","note":""},{"id":"cyrax-12","cat":"Remates","name":"Stage","input":"R, B, R","note":""},{"id":"cyrax-13","cat":"Combos","name":"Combo 18%","input":"X, X, A","note":""},{"id":"cyrax-14","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""},{"id":"cyrax-15","cat":"Combos","name":"Combo 30%","input":"X, X, Z, X, Z, ← + Z","note":""}]},{"id":"sindel","name":"Sindel","moves":[{"id":"sindel-1","cat":"Especiales","name":"Fireball","input":"→, →, A","note":""},{"id":"sindel-2","cat":"Especiales","name":"Air Fireball","input":"↓, →, C","note":"Saltando o flotando"},{"id":"sindel-3","cat":"Especiales","name":"Wave Dizzy","input":"→, →, →, X","note":""},{"id":"sindel-4","cat":"Especiales","name":"Float","input":"←, ←, →, Z","note":"Apretá B para aterrizar"},{"id":"sindel-5","cat":"Especiales","name":"Double Fireball","input":"←, ←, →, A","note":""},{"id":"sindel-6","cat":"Remates","name":"Fatality 1","input":"Y, Y, B, Y, B","note":"Distancia: barrida"},{"id":"sindel-7","cat":"Remates","name":"Fatality 2","input":"Y, B, B, Y + B","note":"Distancia: cerca"},{"id":"sindel-8","cat":"Remates","name":"Animality","input":"→, →, ↑, X","note":"Distancia: cerca"},{"id":"sindel-9","cat":"Remates","name":"Babality","input":"Y, Y, Y, ↑","note":""},{"id":"sindel-10","cat":"Remates","name":"Friendship","input":"Y, Y, Y, Y, Y, ↑","note":""},{"id":"sindel-11","cat":"Remates","name":"Brutality","input":"X, B, C, B, C, Z, B, Z, C, B, A","note":""},{"id":"sindel-12","cat":"Remates","name":"Stage","input":"↓, ↓, ↓, A","note":""},{"id":"sindel-13","cat":"Combos","name":"Combo 19%","input":"X, X, ↓ + X","note":""},{"id":"sindel-14","cat":"Combos","name":"Combo 25%","input":"X, X, A, Z","note":""},{"id":"sindel-15","cat":"Combos","name":"Combo 27%","input":"Z, X, X, ↓ + X","note":""},{"id":"sindel-16","cat":"Combos","name":"Combo 33%","input":"Z, X, X, A, Z","note":""},{"id":"sindel-17","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""}]},{"id":"sub-zero","name":"Sub-Zero","moves":[{"id":"sub-zero-1","cat":"Especiales","name":"Ice Blast","input":"↓, →, A","note":""},{"id":"sub-zero-2","cat":"Especiales","name":"Ice Clone","input":"↓, ←, A","note":"También en el aire"},{"id":"sub-zero-3","cat":"Especiales","name":"Ice Shower (Front)","input":"↓, →, ←, X","note":""},{"id":"sub-zero-4","cat":"Especiales","name":"Ice Shower (Over)","input":"↓, →, X","note":""},{"id":"sub-zero-5","cat":"Especiales","name":"Ice Shower (Behind)","input":"↓, ←, →, X","note":""},{"id":"sub-zero-6","cat":"Especiales","name":"Slide","input":"← + A + B + C","note":""},{"id":"sub-zero-7","cat":"Remates","name":"Fatality 1","input":"←, ←, ↓, ←, R","note":"Distancia: barrida"},{"id":"sub-zero-8","cat":"Remates","name":"Fatality 2","input":"B, B, Y, B, Y","note":"Distancia: cerca"},{"id":"sub-zero-9","cat":"Remates","name":"Animality","input":"→, →, ↑, ↑","note":"Distancia: cerca"},{"id":"sub-zero-10","cat":"Remates","name":"Babality","input":"↓, ←, ←, Z","note":""},{"id":"sub-zero-11","cat":"Remates","name":"Friendship","input":"C, C, Y, Y, ↑","note":""},{"id":"sub-zero-12","cat":"Remates","name":"Brutality","input":"X, C, Z, A, X, Z, Z, X, X, A, X","note":""},{"id":"sub-zero-13","cat":"Remates","name":"Stage","input":"←, ↓, →, →, Z","note":""},{"id":"sub-zero-14","cat":"Combos","name":"Combo 26%","input":"X, X, C, Z, ← + Z","note":""},{"id":"sub-zero-15","cat":"Combos","name":"Combo 18%","input":"X, X, ← + Z","note":""},{"id":"sub-zero-16","cat":"Combos","name":"Combo 19%","input":"Z, Z, ← + Z","note":""},{"id":"sub-zero-17","cat":"Combos","name":"Combo 23%","input":"X, X, A, ← + C, ← + Z, ← + Z","note":""},{"id":"sub-zero-18","cat":"Combos","name":"Combo 22%","input":"X, X, A, ← + Z","note":""}]}]}</script>
+<script id="app">window.addEventListener("error", function(e){ var b = document.getElementById("boot"); if (b) b.textContent = "No se pudo abrir el códice. Error: " + (e && e.message ? e.message : "desconocido"); });
+(function(){
+const HEAD = '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>Códice del Torneo</title>';
+const CATS = ["Especiales","Remates","Combos","Transformaciones","Otros"];
+const CAT_TITLES = { "Especiales":"Special Moves", "Remates":"Finishing Moves", "Combos":"Combos", "Transformaciones":"Morphs" };
+const BTN = { X:"punch", A:"punch", Z:"kick", C:"kick", B:"neutral", Y:"neutral", R:"neutral" };
+const ACT_OF = { X:"HP", A:"LP", Z:"HK", C:"LK", B:"BL", Y:"RUN", R:"RUN" };
+const ACTIONS = [["HP","Golpe alto"],["LP","Golpe bajo"],["HK","Patada alta"],["LK","Patada baja"],["BL","Bloqueo"],["RUN","Correr"]];
+const ACT_CLASS = { HP:"punch", LP:"punch", HK:"kick", LK:"kick", BL:"neutral", RUN:"neutral" };
+const PROFILES = {
+  sega: { name:"Sega", keys:["X","Y","Z","A","B","C","L","R"], def:{ HP:"X", LP:"A", HK:"Z", LK:"C", BL:"B", RUN:"Y" } },
+  ps:   { name:"PlayStation", keys:["SQ","TR","CI","CR","L1","R1","L2","R2"], def:{ HP:"SQ", LP:"CR", HK:"TR", LK:"CI", BL:"R1", RUN:"R2" } },
+  xbox: { name:"Xbox", keys:["X","Y","B","A","LB","RB","LT","RT"], def:{ HP:"X", LP:"A", HK:"Y", LK:"B", BL:"RB", RUN:"RT" } }
+};
+const PS_NAMES = { SQ:"cuadrado", TR:"triángulo", CI:"círculo", CR:"equis" };
+const PS_PUA = { SQ:"\uE001", TR:"\uE002", CI:"\uE003", CR:"\uE004" };
+const PUA_PS = { "\uE001":"SQ", "\uE002":"TR", "\uE003":"CI", "\uE004":"CR" };
+const psSVG = (k, cls) => {
+  const shape = { SQ:'<rect x="5.5" y="5.5" width="13" height="13" rx="1.5"/>', TR:'<path d="m12 4.5 8 14h-16z"/>',
+    CI:'<circle cx="12" cy="12" r="7.3"/>', CR:'<path d="m6.5 6.5 11 11m0-11-11 11"/>' }[k];
+  return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">${shape}</g></svg>`;
+};
+let ctrl = { profile:"sega", maps:{} };
+try { const cs = JSON.parse(localStorage.getItem("codice-ctrl-v1")); if (cs && PROFILES[cs.profile]) ctrl = { profile: cs.profile, maps: cs.maps || {} }; } catch(e) {}
+const saveCtrl = () => { try { localStorage.setItem("codice-ctrl-v1", JSON.stringify(ctrl)); } catch(e) {} };
+const curMap = () => Object.assign({}, PROFILES[ctrl.profile].def, ctrl.maps[ctrl.profile] || {});
+const keyFor = letter => curMap()[ACT_OF[letter]];
+const keyName = k => ctrl.profile === "ps" && PS_NAMES[k] ? PS_NAMES[k] : k;
+function keyHTML(k, act){
+  const p = ctrl.profile;
+  if (p === "ps" && PS_NAMES[k]) return `<span class="k coin ps ps-${k}" title="${PS_NAMES[k]}">${psSVG(k, "")}</span>`;
+  if (p === "xbox" && /^[ABXY]$/.test(k)) return `<span class="k coin xb-${k}">${k}</span>`;
+  if (p === "sega" && k.length === 1 && k !== "L" && k !== "R") return `<span class="k coin ${ACT_CLASS[act]}">${k}</span>`;
+  return `<span class="k pill">${esc(k)}</span>`;
+}
+const btnHTML = letter => keyHTML(keyFor(letter), ACT_OF[letter]);
+const BTN_RE = /\b([XAZCBYR])\b/g;
+const mapPlain = s => String(s).replace(BTN_RE, l => keyName(keyFor(l)));
+const mapInline = escaped => escaped.replace(BTN_RE, l => { const k = keyFor(l);
+  return ctrl.profile === "ps" && PS_NAMES[k] ? `<span class="ps-in-wrap" role="img" aria-label="${PS_NAMES[k]}">${psSVG(k, "btn-in")}</span>` : esc(k); });
+const mapCanvas = s => String(s).replace(BTN_RE, l => { const k = keyFor(l); return ctrl.profile === "ps" && PS_PUA[k] ? PS_PUA[k] : k; });
+const DIRS = {ADELANTE:"→",ATRAS:"←","ATRÁS":"←",ARRIBA:"↑",ABAJO:"↓",
+  "→":"→","←":"←","↑":"↑","↓":"↓","↘":"↘","↙":"↙","↗":"↗","↖":"↖"};
+const DIR_NAMES = {"→":"adelante","←":"atrás","↑":"arriba","↓":"abajo","↘":"abajo-adelante","↙":"abajo-atrás","↗":"arriba-adelante","↖":"arriba-atrás"};
+const ARROW_ROT = {"→":0,"↘":45,"↓":90,"↙":135,"←":180,"↖":225,"↑":270,"↗":315};
+const ARROW_RE = /[←→↑↓↖↗↙↘]/g;
+const arrowSVG = (d, cls) => `<svg class="${cls||"arr"}" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(${ARROW_ROT[d]} 12 12)"><path d="M3.5 12h15M12.5 5.5L19 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`;
+const FAVS_ID = "__favs";
+const DRAFT_KEY = "codice-draft-v3", FAVS_KEY = "codice-favs-v2", FAVC_KEY = "codice-favchars-v1", VIEW_KEY = "codice-view-v2";
+const CARD_W = 900, CARD_H = 1600;
+const hash = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); };
+const uid = () => Math.random().toString(36).slice(2,10);
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const use = n => (window.claude && typeof window.claude.use === "function") ? window.claude.use(n).catch(()=>null) : Promise.resolve(null);
+const lsGet = k => { try { return localStorage.getItem(k); } catch(e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch(e) {} };
+const lsDel = k => { try { localStorage.removeItem(k); } catch(e) {} };
+const imgSrc = c => c && c.img ? "/_blob/" + c.img : "";
+const initials = c => c.name.split(/\s+/).map(w => w[0] || "").join("").slice(0,2).toUpperCase();
+
+const shellTpl = document.getElementById("shell");
+document.body.appendChild(shellTpl.content.cloneNode(true));
+
+let base;
+try { base = JSON.parse(document.getElementById("codex-data").textContent); } catch(e) { base = null; }
+if (!base || !Array.isArray(base.chars)) base = { chars: [] };
+const baseHash = hash(JSON.stringify(base));
+let data = clone(base), pending = false;
+try {
+  const d = JSON.parse(lsGet(DRAFT_KEY));
+  if (d && d.base === baseHash && d.data && Array.isArray(d.data.chars)) { data = d.data; pending = true; }
+  else lsDel(DRAFT_KEY);
+} catch(e) {}
+
+let favs = new Set(), favChars = new Set();
+try { favs = new Set(JSON.parse(lsGet(FAVS_KEY)) || []); } catch(e) {}
+try { favChars = new Set(JSON.parse(lsGet(FAVC_KEY)) || []); } catch(e) {}
+const saveFavs = () => lsSet(FAVS_KEY, JSON.stringify([...favs]));
+const saveFavChars = () => lsSet(FAVC_KEY, JSON.stringify([...favChars]));
+let viewMode = lsGet(VIEW_KEY) === "lista" ? "lista" : "ficha";
+
+const sortedChars = () => data.chars.slice().sort((a,b) => a.name.localeCompare(b.name, "es"));
+let selectedId = (sortedChars().find(c => favChars.has(c.id)) || sortedChars()[0] || {}).id || null;
+let catFilter = "Todos", editing = false, editingMoveId = null, lastCat = "Especiales", query = "";
+let artifactNs = null, canWrite = false;
+const current = () => data.chars.find(c => c.id === selectedId);
+
+function commit(){
+  pending = true;
+  lsSet(DRAFT_KEY, JSON.stringify({ base: baseHash, data }));
+  render();
+}
+
+function renderInput(str){
+  const s = String(str||"");
+  const parts = s.split(/(\[[^\]]*\])/).map(seg => {
+    if (/^\[.*\]$/.test(seg)) { const w = seg.slice(1,-1).trim(); return w ? `<span class="k word">${esc(w)}</span>` : ""; }
+    return seg.toUpperCase().replace(/([+\-])/g," $1 ").split(/[\s,]+/).filter(Boolean).map(t => {
+      if (DIRS[t]) return `<span class="k dir" title="${DIR_NAMES[DIRS[t]]}">${arrowSVG(DIRS[t])}</span>`;
+      if (BTN[t]) return btnHTML(t);
+      if (t === "+" || t === "-") return `<span class="plus">${t}</span>`;
+      return `<span class="k txt">${esc(t)}</span>`;
+    }).join("");
+  }).join("");
+  return `<span class="seq" role="img" aria-label="${esc(mapPlain(s.replace(/[\[\]]/g,"")))}">${parts}</span>`;
+}
+const plainInput = s => String(s||"").replace(/[\[\]]/g,"");
+const cardText = s => mapInline(esc(s)).replace(ARROW_RE, a => arrowSVG(a, "arr-in"));
+const plainNote = n => n ? " (" + n.replace(/^Distancia:\s*/i,"").replace(/^./, ch => ch.toLowerCase()) + ")" : "";
+function catOrder(moves){
+  const extra = [...new Set(moves.map(m=>m.cat).filter(c=>!CATS.includes(c)))];
+  return [...CATS, ...extra].filter(c => moves.some(m=>m.cat===c));
+}
+const thumbHTML = c => `<span class="thumb" aria-hidden="true">${c.img ? `<img src="${esc(imgSrc(c))}" alt="" onerror="this.remove()">` : ""}${c.img ? "" : esc(initials(c))}</span>`;
+
+function renderCard(c){
+  const cats = catOrder(c.moves);
+  const secs = cats.map((cat, i) => {
+    const combo = cat === "Combos";
+    const rows = c.moves.filter(m=>m.cat===cat).map(m => combo
+      ? `<li class="card-row">${cardText(plainInput(m.input))} (${esc(m.name.replace(/^Combo\s*/i,""))})${cardText(plainNote(m.note))}</li>`
+      : `<li class="card-row">${esc(m.name)}: ${cardText(plainInput(m.input))}${cardText(plainNote(m.note))}</li>`).join("");
+    const title = i === 0 ? "" : `<h3 class="card-bar">${esc(CAT_TITLES[cat]||cat)}:</h3>`;
+    return `<section class="card-sec${combo?" combos":""}${cat==="Transformaciones"?" morphs":""}">${title}<ul>${rows}</ul></section>`;
+  }).join("");
+  return `<article class="card" aria-label="Ficha de ${esc(c.name)}">
+    <div class="card-head"><div class="card-pic">${c.img ? `<img src="${esc(imgSrc(c))}" alt="Imagen de ${esc(c.name)}">` : `<span aria-hidden="true">${esc(initials(c))}</span>`}</div>
+      <h2 class="card-name">${esc(c.name.toUpperCase())}</h2>
+      <h3 class="card-bar">${cats[0] ? esc(CAT_TITLES[cats[0]]||cats[0])+":" : ""}</h3></div>
+    ${secs}
+  </article>
+  <div class="cardtools"><button class="xpbtn primary" data-act="dlcard">Descargar imagen</button><span id="dlMsg" role="status"></span></div>`;
+}
+
+const KEYPAD = [["←","→","↑","↓","↖","↗","↙","↘"],["X","A","Z","C","B","Y"],["+","-"]];
+function keypadHTML(){
+  return `<div class="keypad" aria-label="Teclado de comandos">${KEYPAD.map(row => row.map(k =>
+    `<button type="button" data-key="${k}" class="${BTN[k]?"kp-"+BTN[k]:""}" aria-label="Insertar ${DIR_NAMES[k]||k}">${ARROW_ROT[k]!==undefined ? arrowSVG(k,"arr-in") : k}</button>`).join("")).join('<span class="sep"></span>')}
+    <span class="sep"></span><button type="button" data-key="back" aria-label="Borrar el último">⌫</button></div>`;
+}
+function insertKey(input, k){
+  let v = input.value.replace(/\s+$/,"");
+  if (k === "back") v = v.replace(/(\s*[,+\-]?\s*)(\[[^\]]*\]|[^\s,+\-\[\]]+|[+\-])$/, "");
+  else if (!v) v = (k === "+" || k === "-") ? "" : k;
+  else if (k === "+" || k === "-" || /[+\-]$/.test(v)) v += " " + k;
+  else v += ", " + k;
+  input.value = v;
+  input.dispatchEvent(new Event("input"));
+}
+
+function favMoves(){
+  const out = [];
+  sortedChars().forEach(c => { const ms = c.moves.filter(m => favs.has(m.id)); if (ms.length) out.push({ c, ms }); });
+  return out;
+}
+function moveRow(m, opts){
+  opts = opts || {};
+  const on = favs.has(m.id);
+  return `<li class="move">
+    <button class="star" data-act="fav" data-id="${m.id}" aria-pressed="${on}" aria-label="${on?"Quitar de favoritos":"Agregar a favoritos"}: ${esc(m.name)}">${on?"★":"☆"}</button>
+    <div class="name">${esc(m.name)}${opts.showCat?`<small>${esc(m.cat)}</small>`:""}${m.note?`<span class="note">${cardText(m.note)}</span>`:""}</div>
+    ${renderInput(m.input)}
+    ${opts.tools ? `<div class="row-tools edit-only">
+      <button class="xpbtn" data-act="editmove" data-id="${m.id}">Editar</button>
+      <button class="xpbtn danger" data-act="delmove" data-id="${m.id}">Borrar</button></div>` : ""}</li>`;
+}
+const legendHTML = () => `<div class="legend" aria-label="Referencia de botones (${PROFILES[ctrl.profile].name})">
+    ${ACTIONS.map(([act, label]) => `<span>${keyHTML(curMap()[act], act)} ${label}</span>`).join("")}</div>`;
+
+function rosterItem(c){
+  return `<li><button data-id="${c.id}" aria-current="${c.id===selectedId}">${thumbHTML(c)}<span class="nm">${favChars.has(c.id)?'<span class="fav-mark" aria-label="Favorita">★ </span>':""}${esc(c.name)}</span><small>${c.moves.length}</small></button></li>`;
+}
+function renderRoster(){
+  const q = query.trim().toLowerCase();
+  const chars = sortedChars().filter(c => c.name.toLowerCase().includes(q));
+  document.getElementById("rosterList").innerHTML = chars.map(rosterItem).join("") || `<li class="hint">Ningún personaje coincide.</li>`;
+  const fc = sortedChars().filter(c => favChars.has(c.id));
+  const nMoves = favMoves().reduce((n,g)=>n+g.ms.length,0);
+  document.getElementById("favList").innerHTML =
+    `<li><button data-id="${FAVS_ID}" aria-current="${selectedId===FAVS_ID}"><span class="thumb" aria-hidden="true">★</span><span class="nm">Mis favoritos</span><small>${fc.length + nMoves}</small></button></li>`
+    + fc.map(rosterItem).join("");
+  document.getElementById("statusL").textContent = `${data.chars.length} ${data.chars.length===1?"luchador":"luchadores"}`;
+  const c = current();
+  document.getElementById("statusR").textContent = selectedId === FAVS_ID ? "Favoritos" : (c ? `${c.name}: ${c.moves.length} movimientos` : "");
+}
+
+function renderFavs(main){
+  const groups = favMoves();
+  const fc = sortedChars().filter(c => favChars.has(c.id));
+  main.innerHTML = `<div class="dhead"><h2>Mis favoritos</h2></div>
+    ${fc.length ? `<h3 class="subhead">Fichas favoritas</h3><div class="favchars">${fc.map(c =>
+      `<button class="xpbtn" data-goto="${c.id}" data-ficha="1">${thumbHTML(c)}${esc(c.name)}</button>`).join("")}</div>` : ""}
+    ${groups.length ? `<h3 class="subhead">Movimientos favoritos</h3>` + groups.map(g => `<div class="group"><h3><button data-goto="${g.c.id}">${esc(g.c.name)}</button></h3>
+      <ul class="moves">${g.ms.map(m => moveRow(m, { showCat:true })).join("")}</ul></div>`).join("") : ""}
+    ${!fc.length && !groups.length ? `<div class="empty"><p><strong>Todavía no marcaste favoritos.</strong></p><p>Tocá “☆ Favorita” en un personaje, o la estrella ☆ al lado de cualquier movimiento en la vista Lista, y va a aparecer acá.</p></div>` : ""}
+    ${groups.length ? legendHTML() : ""}`;
+}
+
+function renderDetail(){
+  const main = document.getElementById("detail");
+  if (selectedId === FAVS_ID) { renderFavs(main); return; }
+  const c = current();
+  if (!c) {
+    main.innerHTML = `<div class="empty"><p><strong>Todavía no hay personajes.</strong></p>
+      <p>${canWrite ? "Tocá <strong>Editar</strong> arriba y agregá el primero con el nombre que figura en su tarjeta." : "Cuando se carguen personajes van a aparecer acá."}</p></div>`;
+    return;
+  }
+  const cats = catOrder(c.moves);
+  if (catFilter !== "Todos" && !cats.includes(catFilter)) catFilter = "Todos";
+  const shown = catFilter === "Todos" ? cats : [catFilter];
+  const em = editingMoveId ? c.moves.find(m=>m.id===editingMoveId) : null;
+  const showCard = viewMode === "ficha" && !editing;
+  const isFav = favChars.has(c.id);
+
+  main.innerHTML = `
+  <div class="dhead"><h2>${esc(c.name)}</h2>
+    <div class="acts">
+      <button class="xpbtn favchar" data-act="favchar" aria-pressed="${isFav}">${isFav ? "★ Favorita" : "☆ Favorita"}</button>
+      <span class="seg" role="group" aria-label="Forma de ver">
+        <button class="xpbtn" data-view="ficha" aria-pressed="${showCard}"${editing?" disabled":""}>Ficha</button>
+        <button class="xpbtn" data-view="lista" aria-pressed="${!showCard}">Lista</button>
+      </span>
+    </div>
+  </div>
+  <div class="edit-panel edit-only">
+    <span class="lbl">Nombre</span>
+    <label class="sr" for="renameInput">Cambiar nombre</label>
+    <input type="text" id="renameInput" value="${esc(c.name)}">
+    <button class="xpbtn" data-act="rename">Cambiar nombre</button>
+    <span class="lbl" style="margin-left:.6rem">Imagen</span>
+    <input type="file" id="imgFile" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+    <button class="xpbtn" data-act="pickimg">${c.img ? "Cambiar imagen" : "Subir imagen"}</button>
+    ${c.img ? `<button class="xpbtn" data-act="rmimg">Quitar imagen</button>` : ""}
+    <span id="imgMsg" role="status"></span>
+    <span class="spacer" style="flex:1"></span>
+    <button class="xpbtn danger" data-act="delchar">Borrar personaje</button>
+  </div>
+  ${showCard ? renderCard(c) : `
+  ${cats.length>1 ? `<div class="chips" aria-label="Filtrar por tipo">
+    ${["Todos",...cats].map(k=>`<button class="xpbtn" data-cat="${esc(k)}" aria-pressed="${k===catFilter}">${esc(k)}</button>`).join("")}</div>` : ""}
+  ${c.moves.length ? shown.map(cat => `<div class="group"><h3>${esc(cat)}</h3><ul class="moves">
+      ${c.moves.filter(m=>m.cat===cat).map(m => moveRow(m, { tools:true })).join("")}</ul></div>`).join("")
+  : `<div class="empty"><p>Este personaje no tiene movimientos cargados.</p></div>`}
+  <form class="moveform edit-only" id="moveForm">
+    <h3>${em ? "Editar movimiento" : "Agregar movimiento"}</h3>
+    <div class="inner">
+    <div class="fields">
+      <label>Nombre<input name="name" required value="${esc(em ? em.name : "")}" placeholder="Ej.: Fatality 1"></label>
+      <label>Tipo<input name="cat" list="catList" required value="${esc(em ? em.cat : lastCat)}"></label>
+      <label>Comando<input name="input" required value="${esc(em ? em.input : "")}" placeholder="Usá el teclado de abajo"></label>
+      <label>Nota (opcional)<input name="note" value="${esc(em ? em.note : "")}" placeholder="Ej.: Distancia: cerca"></label>
+    </div>
+    <datalist id="catList">${CATS.map(k=>`<option value="${k}">`).join("")}</datalist>
+    ${keypadHTML()}
+    <p class="hint">Tocá las flechas y botones para armar el comando, o escribilo a mano. Usá + para apretar juntos. Las instrucciones en texto van entre corchetes, por ejemplo: [Mantener] A, ←, →, [soltar] A. Los comandos se cargan siempre con los botones de Sega, como en las tarjetas; la app los convierte al control que elija cada uno.</p>
+    <div class="preview" id="preview">${renderInput(em ? em.input : "")}</div>
+    <div class="formbtns">
+      <button class="xpbtn primary">${em ? "Guardar cambios" : "Agregar movimiento"}</button>
+      ${em ? `<button type="button" class="xpbtn" data-act="cancelmove">Cancelar</button>` : ""}
+    </div></div>
+  </form>
+  ${legendHTML()}`}`;
+
+  const f = document.getElementById("moveForm");
+  if (f) {
+    f.input.addEventListener("input", () => { document.getElementById("preview").innerHTML = renderInput(f.input.value); });
+    f.querySelector(".keypad").addEventListener("click", e => { const k = e.target.closest("[data-key]"); if (k) insertKey(f.input, k.dataset.key); });
+    f.addEventListener("submit", e => {
+      e.preventDefault();
+      const m = { name:f.name.value.trim(), cat:f.cat.value.trim()||"Otros", input:f.input.value.trim(), note:f.note.value.trim() };
+      if (!m.name || !m.input) return;
+      lastCat = m.cat;
+      if (editingMoveId) { Object.assign(c.moves.find(x=>x.id===editingMoveId), m); editingMoveId = null; }
+      else c.moves.push(Object.assign({ id:uid() }, m));
+      commit();
+      setTimeout(()=>{ const n = document.querySelector('#moveForm input[name="name"]'); if (n) n.focus(); }, 0);
+    });
+  }
+  const fi = document.getElementById("imgFile");
+  if (fi) fi.addEventListener("change", () => { if (fi.files && fi.files[0]) uploadImage(c, fi.files[0]); });
+}
+
+/* image upload: crop to square, then store as an asset */
+function readAsDataURL(file){ return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); }); }
+function loadImg(src){ return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+async function squareBlob(file){
+  const img = await loadImg(await readAsDataURL(file));
+  const S = 320, side = Math.min(img.naturalWidth, img.naturalHeight);
+  const cv = document.createElement("canvas"); cv.width = S; cv.height = S;
+  cv.getContext("2d").drawImage(img, (img.naturalWidth-side)/2, (img.naturalHeight-side)/2, side, side, 0, 0, S, S);
+  return await new Promise(res => cv.toBlob(res, "image/jpeg", 0.9));
+}
+async function uploadImage(c, file){
+  const msg = document.getElementById("imgMsg");
+  const assets = await use("assets");
+  if (!assets) { if (msg) msg.textContent = "Para subir imágenes abrí la app desde su link con permiso de edición."; return; }
+  if (msg) msg.textContent = "Subiendo…";
+  try {
+    let blob = null;
+    try { blob = await squareBlob(file); } catch(e) {}
+    const r = blob ? await assets.upload(blob, { type: "image/jpeg" }) : await assets.upload(file);
+    c.img = r.id; commit();
+  } catch (err) {
+    const code = err && err.code;
+    if (msg) msg.textContent = code === "too_large" ? "La imagen es demasiado grande." : code === "unsupported_type" ? "Ese tipo de archivo no se puede usar. Probá con JPG o PNG." : "No se pudo subir la imagen. Probá de nuevo.";
+  }
+}
+
+/* fixed-size card image */
+function cardCanvas(c, pic){
+  const W = CARD_W, H = CARD_H, PAD = 30, B = 4;
+  const FONT = '"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif';
+  const paper = "#fbfaf7", rowBg = "#e7e5e0", ink = "#151413", bar = "#151413", barInk = "#fbfaf7";
+  const meas = document.createElement("canvas").getContext("2d");
+  const innerX = PAD + B, innerW = W - 2*PAD - 2*B;
+  const cats = catOrder(c.moves);
+  function atoms(str){
+    const out = [];
+    String(str).split(/([←→↑↓↖↗↙↘\uE001-\uE004])/).forEach(p => {
+      if (!p) return;
+      if (ARROW_ROT[p] !== undefined || PUA_PS[p]) out.push({ a:p });
+      else p.split(/(\s+)/).forEach(w => { if (w) out.push(/^\s+$/.test(w) ? { sp:true } : { t:w }); });
+    });
+    return out;
+  }
+  function wrap(str, bold, FS, maxW){
+    meas.font = `${bold?"700":"400"} ${FS}px ${FONT}`;
+    const spW = meas.measureText(" ").width, aw = FS*0.95;
+    const units = []; let u = [];
+    atoms(str).forEach(x => { if (x.sp) { if (u.length) units.push(u); u = []; } else u.push(x); });
+    if (u.length) units.push(u);
+    const lines = []; let line = [], lw = 0;
+    units.forEach(un => {
+      const w = un.reduce((s,x) => s + (x.a ? aw : meas.measureText(x.t).width), 0);
+      if (line.length && lw + spW + w > maxW) { lines.push(line); line = []; lw = 0; }
+      if (line.length) { line.push({ sp:true }); lw += spW; }
+      un.forEach(x => line.push(x)); lw += w;
+    });
+    if (line.length) lines.push(line);
+    return lines;
+  }
+  function layout(FS){
+    const LH = Math.round(FS*1.3), HEAD_H = Math.round(FS*2), BAR_H = Math.round(FS*1.7), RP = Math.max(4, Math.round(FS*0.3));
+    const rowH = n => n*LH + 2*RP - (LH-FS)/2;
+    const sections = cats.map((cat, i) => {
+      const combo = cat === "Combos";
+      const cols = cat === "Transformaciones" ? 2 : 1;
+      const colW = (innerW - (cols-1)*B) / cols;
+      const rows = c.moves.filter(m => m.cat === cat).map(m => wrap(combo
+        ? mapCanvas(plainInput(m.input)) + " (" + m.name.replace(/^Combo\s*/i,"") + ")" + mapCanvas(plainNote(m.note))
+        : m.name + ": " + mapCanvas(plainInput(m.input) + plainNote(m.note)), combo, FS, colW - 2*RP));
+      const bands = [];
+      for (let k = 0; k < rows.length; k += cols) {
+        const grp = rows.slice(k, k+cols);
+        bands.push({ grp, h: Math.max(...grp.map(r => rowH(r.length))) });
+      }
+      return { cat, combo, cols, colW, title: i > 0, bands };
+    });
+    let h = PAD + B + HEAD_H + BAR_H;
+    sections.forEach(s => { if (s.title) h += BAR_H + B; s.bands.forEach(bd => { h += bd.h + B; }); });
+    return { FS, LH, HEAD_H, BAR_H, RP, sections, h: h + PAD + B };
+  }
+  let L = null;
+  for (let fs = 32; fs >= 12; fs--) { L = layout(fs); if (L.h <= H - 30) break; }
+  const { FS, LH, HEAD_H, BAR_H, RP, sections } = L;
+
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = paper; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = bar; ctx.fillRect(PAD, PAD, W-2*PAD, H-2*PAD);
+  let y = PAD + B;
+  const PIC = HEAD_H + BAR_H;
+  if (pic) {
+    const side = Math.min(pic.naturalWidth, pic.naturalHeight);
+    ctx.drawImage(pic, (pic.naturalWidth-side)/2, (pic.naturalHeight-side)/2, side, side, innerX, y, PIC, PIC);
+  } else {
+    ctx.fillStyle = barInk; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = `700 ${Math.round(PIC*0.38)}px ${FONT}`; ctx.fillText(initials(c), innerX + PIC/2, y + PIC/2);
+  }
+  const hx = innerX + PIC + B, hw = innerW - PIC - B;
+  ctx.fillStyle = paper; ctx.fillRect(hx, y, hw, HEAD_H);
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillStyle = ink; ctx.font = `700 ${Math.round(FS*1.15)}px ${FONT}`; ctx.fillText(c.name.toUpperCase(), hx + hw/2, y + HEAD_H/2 + 1);
+  ctx.fillStyle = barInk; ctx.font = `700 ${Math.round(FS*1.05)}px ${FONT}`;
+  ctx.fillText(sections[0] ? (CAT_TITLES[sections[0].cat]||sections[0].cat) + ":" : "", hx + hw/2, y + HEAD_H + BAR_H/2);
+  y += HEAD_H + BAR_H;
+  function psShape(x, cy, size, ch, color){
+    const k = PUA_PS[ch];
+    ctx.save(); ctx.translate(x + size/2, cy); ctx.scale(size/24, size/24); ctx.translate(-12, -12);
+    ctx.strokeStyle = color; ctx.lineWidth = 2.7; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.beginPath();
+    if (k === "SQ") ctx.rect(5.5, 5.5, 13, 13);
+    else if (k === "TR") { ctx.moveTo(12, 4.5); ctx.lineTo(20, 18.5); ctx.lineTo(4, 18.5); ctx.closePath(); }
+    else if (k === "CI") ctx.arc(12, 12, 7.3, 0, Math.PI*2);
+    else { ctx.moveTo(6.5, 6.5); ctx.lineTo(17.5, 17.5); ctx.moveTo(17.5, 6.5); ctx.lineTo(6.5, 17.5); }
+    ctx.stroke(); ctx.restore();
+  }
+  function arrow(x, cy, size, d, color){
+    ctx.save(); ctx.translate(x + size/2, cy); ctx.rotate(ARROW_ROT[d]*Math.PI/180); ctx.scale(size/24, size/24);
+    ctx.strokeStyle = color; ctx.lineWidth = 3.4; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(-8.5,0); ctx.lineTo(6.5,0); ctx.moveTo(0.5,-6.5); ctx.lineTo(7,0); ctx.lineTo(0.5,6.5); ctx.stroke();
+    ctx.restore();
+  }
+  sections.forEach(s => {
+    if (s.title) {
+      y += B; ctx.fillStyle = barInk; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = `700 ${Math.round(FS*1.05)}px ${FONT}`;
+      ctx.fillText((CAT_TITLES[s.cat]||s.cat) + ":", W/2, y + BAR_H/2); y += BAR_H;
+    }
+    const color = s.combo ? barInk : ink;
+    s.bands.forEach(bd => {
+      y += B;
+      bd.grp.forEach((lines, gi) => {
+        const x0 = innerX + gi*(s.colW + B);
+        if (!s.combo) { ctx.fillStyle = rowBg; ctx.fillRect(x0, y, s.colW, bd.h); }
+        ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+        ctx.font = `${s.combo?"700":"400"} ${FS}px ${FONT}`;
+        const spW = ctx.measureText(" ").width;
+        lines.forEach((ln, li) => {
+          let x = x0 + RP; const baseY = y + RP + FS*0.85 + li*LH;
+          ln.forEach(a => {
+            if (a.sp) x += spW;
+            else if (a.a) { (PUA_PS[a.a] ? psShape : arrow)(x, baseY - FS*0.33, FS*0.95, a.a, color); x += FS*0.95; }
+            else { ctx.fillText(a.t, x, baseY); x += ctx.measureText(a.t).width; }
+          });
+        });
+      });
+      y += bd.h;
+      if (s.combo) { ctx.fillStyle = barInk; ctx.fillRect(innerX, y, innerW, 3); }
+    });
+  });
+  return cv;
+}
+function toBlobSafe(cv){ return new Promise(res => { try { cv.toBlob(b => res(b), "image/png"); } catch(e) { res(null); } }); }
+async function downloadCard(c, btn){
+  const msgEl = document.getElementById("dlMsg");
+  btn.disabled = true; if (msgEl) msgEl.textContent = "Preparando imagen…";
+  let pic = null;
+  if (c.img) { try { pic = await Promise.race([loadImg(imgSrc(c)), new Promise((_, rej) => setTimeout(rej, 5000))]); } catch(e) { pic = null; } }
+  let cv = cardCanvas(c, pic), blob = await toBlobSafe(cv), url = null;
+  if (!blob && pic) { cv = cardCanvas(c, null); blob = await toBlobSafe(cv); }
+  const filename = c.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") + (ctrl.profile === "sega" ? "" : "-" + ctrl.profile) + "-ficha.png";
+  const dl = await use("downloads");
+  if (dl && blob) {
+    try { await dl.save({ filename, data: blob }); if (msgEl) msgEl.textContent = "Listo."; btn.disabled = false; return; }
+    catch (err) {
+      const code = err && err.code;
+      if (code === "declined") { if (msgEl) msgEl.textContent = ""; btn.disabled = false; return; }
+      if (code === "rate_limited") { if (msgEl) msgEl.textContent = "Esperá unos segundos y probá de nuevo."; btn.disabled = false; return; }
+    }
+  }
+  try { url = cv.toDataURL("image/png"); } catch(e) { url = cardCanvas(c, null).toDataURL("image/png"); }
+  if (msgEl) msgEl.textContent = "";
+  document.getElementById("imgOut").src = url;
+  const dlA = document.getElementById("imgDl"); dlA.href = url; dlA.setAttribute("download", filename);
+  const d = document.getElementById("imgDlg");
+  d.showModal ? d.showModal() : d.setAttribute("open","");
+  btn.disabled = false;
+}
+
+function updateChrome(){
+  document.getElementById("editBtn").hidden = !canWrite;
+  document.querySelector(".toolbar").hidden = !canWrite;
+  if (!canWrite && editing) toggleEditing(false);
+  document.getElementById("pendingBar").hidden = !(pending && canWrite);
+}
+function render(){ renderRoster(); renderDetail(); updateChrome(); }
+
+function armDelete(btn, fn){
+  if (btn.dataset.armed) { fn(); return; }
+  btn.dataset.armed = "1"; const t = btn.textContent; btn.textContent = "¿Seguro? Tocá de nuevo";
+  setTimeout(()=>{ if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = t; } }, 3000);
+}
+
+function onPick(e){
+  const b = e.target.closest("button[data-id]"); if (!b) return;
+  selectedId = b.dataset.id; catFilter = "Todos"; editingMoveId = null; render();
+  document.getElementById("detail").scrollTop = 0;
+  if (window.scrollY > 200) window.scrollTo(0, 0);
+}
+document.getElementById("rosterList").addEventListener("click", onPick);
+document.getElementById("favList").addEventListener("click", onPick);
+document.getElementById("search").addEventListener("input", e => { query = e.target.value; renderRoster(); });
+
+document.getElementById("detail").addEventListener("click", e => {
+  const chip = e.target.closest("[data-cat]");
+  if (chip) { catFilter = chip.dataset.cat; renderDetail(); return; }
+  const vt = e.target.closest("[data-view]");
+  if (vt && !vt.disabled) { viewMode = vt.dataset.view; lsSet(VIEW_KEY, viewMode); renderDetail(); return; }
+  const go = e.target.closest("[data-goto]");
+  if (go) {
+    selectedId = go.dataset.goto; catFilter = "Todos";
+    if (go.dataset.ficha) { viewMode = "ficha"; lsSet(VIEW_KEY, viewMode); }
+    render(); return;
+  }
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const c = current();
+  switch (b.dataset.act) {
+    case "favchar": favChars.has(c.id) ? favChars.delete(c.id) : favChars.add(c.id); saveFavChars(); render(); break;
+    case "dlcard": downloadCard(c, b); break;
+    case "fav": { const id = b.dataset.id; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderRoster(); renderDetail(); break; }
+    case "rename": { const v = document.getElementById("renameInput").value.trim(); if (v && v !== c.name) { c.name = v; commit(); } break; }
+    case "pickimg": document.getElementById("imgFile").click(); break;
+    case "rmimg": delete c.img; commit(); break;
+    case "delchar": armDelete(b, () => { data.chars = data.chars.filter(x=>x.id!==c.id); selectedId = (sortedChars()[0]||{}).id || null; commit(); }); break;
+    case "editmove": editingMoveId = b.dataset.id; renderDetail(); document.getElementById("moveForm").scrollIntoView({block:"center"}); break;
+    case "cancelmove": editingMoveId = null; renderDetail(); break;
+    case "delmove": armDelete(b, () => { c.moves = c.moves.filter(m=>m.id!==b.dataset.id); commit(); }); break;
+  }
+});
+
+document.getElementById("addCharForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const inp = document.getElementById("newChar"); const name = inp.value.trim(); if (!name) return;
+  const c = { id:uid(), name, moves:[] }; data.chars.push(c);
+  selectedId = c.id; inp.value = ""; commit();
+});
+
+const editBtn = document.getElementById("editBtn");
+function toggleEditing(on){
+  editing = on; editingMoveId = null;
+  document.body.classList.toggle("editing", editing);
+  editBtn.setAttribute("aria-pressed", editing);
+  editBtn.textContent = editing ? "Listo" : "Editar";
+  renderDetail();
+}
+editBtn.addEventListener("click", () => toggleEditing(!editing));
+
+function buildDoc(d){
+  const css = document.getElementById("css").textContent;
+  const app = document.getElementById("app").textContent;
+  const json = JSON.stringify(d).replace(/</g, "\\u003c");
+  return '<!DOCTYPE html>\n<html lang="es">\n<head>\n' + HEAD + '\n<style id="css">' + css + '</style>\n</head>\n<body>\n'
+    + '<p id="boot" style="padding:2rem 1.2rem;font-size:1.2rem;margin:0;color:#ddd">Cargando el códice…</p>\n'
+    + '<template id="shell">' + shellTpl.innerHTML + '</template>\n'
+    + '<script id="codex-data" type="application/json">' + json + '<\/script>\n'
+    + '<script id="app">' + app + '<\/script>\n</body>\n</html>\n';
+}
+
+const saveMsg = document.getElementById("saveMsg");
+document.getElementById("saveAll").addEventListener("click", async e => {
+  if (!artifactNs) { saveMsg.textContent = "Abrí la app desde su link para poder guardar."; return; }
+  const btn = e.currentTarget; btn.disabled = true; saveMsg.textContent = "Guardando…";
+  try { await artifactNs.publish(buildDoc(data)); saveMsg.textContent = "Guardado."; }
+  catch (err) {
+    const code = err && err.code;
+    if (code === "conflict") saveMsg.textContent = "Había otra versión guardada antes. Recargando.";
+    else if (["not_writer","not_granted","not_declared","consent_required","capability_disabled","capability_removed"].includes(code)) { canWrite = false; saveMsg.textContent = ""; updateChrome(); }
+    else if (code === "rate_limited") saveMsg.textContent = "Demasiados guardados seguidos. Esperá un minuto.";
+    else if (code === "too_large") saveMsg.textContent = "Hay demasiados datos para guardar de una vez.";
+    else saveMsg.textContent = "No se pudo guardar. Probá de nuevo en un momento.";
+    btn.disabled = false;
+  }
+});
+document.getElementById("discardAll").addEventListener("click", e => armDelete(e.currentTarget, () => {
+  lsDel(DRAFT_KEY); data = clone(base); pending = false; editingMoveId = null;
+  if (selectedId !== FAVS_ID && !current()) selectedId = (sortedChars()[0]||{}).id || null;
+  render();
+}));
+
+const closeDlg = d => d.close ? d.close() : d.removeAttribute("open");
+document.getElementById("closeImg").addEventListener("click", () => closeDlg(document.getElementById("imgDlg")));
+const dlg = document.getElementById("dataDlg"), txt = document.getElementById("dataText"), msg = document.getElementById("dataMsg");
+document.getElementById("dataBtn").addEventListener("click", () => {
+  txt.value = JSON.stringify(data, null, 2); msg.textContent = "";
+  dlg.showModal ? dlg.showModal() : dlg.setAttribute("open","");
+});
+document.getElementById("closeData").addEventListener("click", () => closeDlg(dlg));
+document.getElementById("copyData").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(txt.value); msg.textContent = "Copiado."; }
+  catch(e) { txt.select(); msg.textContent = "Texto seleccionado: copialo con Ctrl+C o mantené apretado para copiar."; }
+});
+document.getElementById("loadData").addEventListener("click", () => {
+  try {
+    const d = JSON.parse(txt.value);
+    if (!d || !Array.isArray(d.chars)) throw 0;
+    d.chars.forEach(c => { c.id = c.id || uid(); c.name = String(c.name||"Sin nombre"); c.moves = (c.moves||[]).map(m => ({ id:m.id||uid(), name:m.name||"", cat:m.cat||"Otros", input:m.input||"", note:m.note||"" })); });
+    data = { chars: d.chars }; selectedId = (sortedChars()[0]||{}).id || null; commit();
+    msg.textContent = `Restaurado: ${data.chars.length} personajes. Tocá “Guardar para todos” para compartirlo.`;
+  } catch(e) { msg.textContent = "Ese texto no es una copia válida. Pegá el contenido completo de una copia de seguridad."; }
+});
+
+function renderCtrl(){
+  document.querySelectorAll("#ctrlSeg [data-ctrl]").forEach(b => b.setAttribute("aria-pressed", b.dataset.ctrl === ctrl.profile));
+}
+document.getElementById("ctrlSeg").addEventListener("click", e => {
+  const b = e.target.closest("[data-ctrl]"); if (!b) return;
+  ctrl.profile = b.dataset.ctrl; saveCtrl(); renderCtrl(); renderDetail();
+});
+const ctrlDlg = document.getElementById("ctrlDlg");
+function renderCtrlRows(){
+  const P = PROFILES[ctrl.profile], m = curMap();
+  document.getElementById("ctrlDlgTitle").textContent = "Personalizar botones: " + P.name;
+  document.getElementById("ctrlRows").innerHTML = ACTIONS.map(([act, label]) => `<div class="maprow">
+    <label for="map-${act}">${label}</label>
+    <select id="map-${act}" data-act="${act}">${P.keys.map(k => `<option value="${k}"${m[act]===k?" selected":""}>${esc(PS_NAMES[k] ? PS_NAMES[k][0].toUpperCase()+PS_NAMES[k].slice(1) : k)}</option>`).join("")}</select></div>`).join("");
+}
+document.getElementById("ctrlCustom").addEventListener("click", () => { renderCtrlRows(); ctrlDlg.showModal ? ctrlDlg.showModal() : ctrlDlg.setAttribute("open",""); });
+document.getElementById("ctrlRows").addEventListener("change", e => {
+  const sel = e.target.closest("select[data-act]"); if (!sel) return;
+  ctrl.maps[ctrl.profile] = Object.assign({}, ctrl.maps[ctrl.profile] || {}, { [sel.dataset.act]: sel.value });
+  saveCtrl(); renderDetail();
+});
+document.getElementById("ctrlReset").addEventListener("click", () => { delete ctrl.maps[ctrl.profile]; saveCtrl(); renderCtrlRows(); renderDetail(); });
+document.getElementById("ctrlDone").addEventListener("click", () => ctrlDlg.close ? ctrlDlg.close() : ctrlDlg.removeAttribute("open"));
+renderCtrl();
+render();
+var bootEl = document.getElementById("boot"); if (bootEl) bootEl.remove();
+
+Promise.all([use("artifact"), use("user")]).then(async ([a, u]) => {
+  artifactNs = a;
+  let ok = false;
+  try { ok = u ? await u.canEdit() : false; } catch(e) {}
+  canWrite = !!(a && ok);
+  updateChrome();
+});
+})();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+}
+</script>
+</body>
+</html>
