@@ -89,12 +89,29 @@ button,input,select,textarea{font:inherit;color:inherit}
 .xpbtn.danger{color:var(--red-light);border-color:var(--red)}
 .xpbtn:disabled{opacity:.55;cursor:default}
 
-.body{display:grid;grid-template-columns:clamp(118px,30vw,250px) minmax(0,1fr);flex:1;min-height:0}
+.body{display:block;flex:1;min-height:0}
 .statusbar{display:flex;gap:4px;padding:3px;background:var(--win-2);border-top:1px solid var(--edge-soft);font-size:.8rem;color:var(--muted)}
 .statusbar span{flex:1;padding:1px 6px;border:1px solid var(--edge-soft);border-right-color:var(--win);border-bottom-color:var(--win)}
 
 /* task pane */
-.taskpane{background:linear-gradient(180deg,var(--pane-top),var(--pane-bot));padding:10px 8px;overflow:auto}
+.taskpane{background:linear-gradient(180deg,var(--pane-top),var(--pane-bot));padding:10px 8px;overflow:auto;
+  position:fixed;top:0;left:0;bottom:0;z-index:40;width:min(300px,86vw);
+  padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  transform:translateX(-105%);visibility:hidden;transition:transform .22s ease, visibility 0s linear .22s;
+  box-shadow:4px 0 24px rgba(0,0,0,.55);border-right:3px solid var(--red-dark)}
+body.menu-open .taskpane{transform:none;visibility:visible;transition:transform .22s ease, visibility 0s}
+.scrim{position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .22s}
+body.menu-open .scrim{opacity:1;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){.taskpane,.scrim{transition:none}}
+.tp-top{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px;padding:.3rem .5rem;border-radius:6px 6px 0 0;
+  background:linear-gradient(180deg,#d42a22,#9b0d12);color:#fff;font-weight:700}
+.tp-top button{display:grid;place-items:center;width:26px;height:24px;border:1px solid #fff;border-radius:3px;cursor:pointer;color:#fff;font-weight:700;
+  background:linear-gradient(180deg,#5a5a5a,#1d1d1d)}
+.hamb{display:grid;place-items:center;width:30px;height:26px;margin-right:.15rem;border:1px solid #fff;border-radius:3px;cursor:pointer;color:#fff;padding:0;
+  background:linear-gradient(180deg,#e04a40,#a50f14);box-shadow:inset 0 0 2px rgba(255,255,255,.6)}
+.hamb:hover{background:linear-gradient(180deg,#f06a60,#b8141a)}
+.hamb svg{width:18px;height:18px;display:block}
+.navseg .xpbtn{font-weight:700;min-width:2.2rem}
 .tp-group{margin-bottom:12px;border-radius:6px 6px 0 0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .tp-head{margin:0;padding:.35rem .6rem;font-size:.85rem;font-weight:700;color:var(--grp-ink);
   background:linear-gradient(90deg,var(--grp-head-a),var(--grp-head-b))}
@@ -191,7 +208,7 @@ main{padding:clamp(.6rem,2vw,1.4rem);padding-bottom:5rem;min-width:0;background:
 .favchars .xpbtn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem .3rem .3rem;font-weight:700}
 
 /* card */
-.card{max-width:470px;margin:0 auto;background:var(--card-paper);color:var(--card-ink);padding:14px 14px 22px;
+.card{max-width:580px;margin:0 auto;background:var(--card-paper);color:var(--card-ink);padding:14px 14px 22px;
   box-shadow:0 6px 20px rgba(0,0,0,.35);font-family:Calibri, Carlito, "Segoe UI", Arial, sans-serif;font-size:1.02rem}
 .card-head{display:grid;grid-template-columns:64px 1fr;border:2px solid var(--card-edge)}
 .card-pic{grid-row:1/3;background:var(--card-bar);color:var(--card-bar-ink);display:grid;place-items:center;font-weight:700;font-size:1.4rem;min-height:64px;overflow:hidden}
@@ -208,6 +225,13 @@ main{padding:clamp(.6rem,2vw,1.4rem);padding-bottom:5rem;min-width:0;background:
 .card-sec.combos .card-row{background:var(--card-bar);color:var(--card-bar-ink);font-weight:700;border-bottom:2px solid var(--card-bar-ink)}
 .cardtools{display:flex;gap:.5rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:1rem}
 #dlMsg{color:var(--muted);font-size:.85rem}
+@container (min-width:700px){
+  .card{max-width:660px;font-size:1.22rem;padding:18px 18px 26px}
+  .card-head{grid-template-columns:80px 1fr}
+  .card-pic{min-height:80px;font-size:1.7rem}
+  .card-name{font-size:1.45rem}
+  .card-bar{font-size:1.3rem}
+}
 @container (max-width:360px){
   .card{padding:6px 6px 12px;font-size:.78rem}
   .card-head{grid-template-columns:44px 1fr}
@@ -242,11 +266,6 @@ body:not(.editing) .edit-only{display:none !important}
   .titlebar{border-radius:0}
   .tbtns{display:none}
   body{font-size:14px}
-  .taskpane{padding:6px 5px}
-  .tp-body{padding:.25rem}
-  .tp-body li button{font-size:.82rem;padding:.3rem .2rem;gap:.3rem}
-  .tp-body li small{display:none}
-  .thumb{width:22px;height:22px;font-size:.6rem}
   .dhead h2{font-size:1.1rem;flex-basis:100%}
 }
 </style>
@@ -255,7 +274,7 @@ body:not(.editing) .edit-only{display:none !important}
 <p id="boot" style="padding:2rem 1.2rem;font-size:1.2rem;margin:0;color:#ddd">Cargando el códice…</p>
 <template id="shell"><div class="desktop">
 <div class="window">
-  <div class="titlebar"><span class="ticon" aria-hidden="true">⚔️</span><h1 class="ttitle" style="margin:0">Códice del Torneo</h1>
+  <div class="titlebar"><button class="hamb" id="menuBtn" aria-label="Abrir menú de luchadores" aria-expanded="false" aria-controls="sidePanel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button><span class="ticon" aria-hidden="true">⚔️</span><h1 class="ttitle" style="margin:0">Códice del Torneo</h1>
     <span class="tbtns" aria-hidden="true"><i>_</i><i>□</i><i class="x">×</i></span></div>
   <div class="toolbar" hidden>
     <button class="xpbtn" id="editBtn" aria-pressed="false" hidden>Editar</button>
@@ -263,7 +282,9 @@ body:not(.editing) .edit-only{display:none !important}
     <span class="spacer"></span>
   </div>
   <div class="body">
-    <nav class="taskpane" aria-label="Personajes">
+    <div class="scrim" id="scrim"></div>
+    <nav class="taskpane" id="sidePanel" aria-label="Menú de luchadores" inert>
+      <div class="tp-top"><span>Menú</span><button id="menuClose" aria-label="Cerrar menú">×</button></div>
       <section class="tp-group"><h2 class="tp-head">Mi control</h2><div class="tp-body">
         <div class="ctrlseg" role="group" aria-label="Elegir control" id="ctrlSeg">
           <button class="xpbtn" data-ctrl="sega">Sega</button>
@@ -550,6 +571,10 @@ function renderDetail(){
   main.innerHTML = `
   <div class="dhead"><h2>${esc(c.name)}</h2>
     <div class="acts">
+      <span class="seg navseg" role="group" aria-label="Cambiar de luchador">
+        <button class="xpbtn" data-nav="-1" aria-label="Luchador anterior">‹</button>
+        <button class="xpbtn" data-nav="1" aria-label="Luchador siguiente">›</button>
+      </span>
       <button class="xpbtn favchar" data-act="favchar" aria-pressed="${isFav}">${isFav ? "★ Favorita" : "☆ Favorita"}</button>
       <span class="seg" role="group" aria-label="Forma de ver">
         <button class="xpbtn" data-view="ficha" aria-pressed="${showCard}"${editing?" disabled":""}>Ficha</button>
@@ -805,9 +830,22 @@ function armDelete(btn, fn){
   setTimeout(()=>{ if (btn.isConnected) { delete btn.dataset.armed; btn.textContent = t; } }, 3000);
 }
 
+const menuBtn = document.getElementById("menuBtn"), sidePanel = document.getElementById("sidePanel");
+function setMenu(open){
+  document.body.classList.toggle("menu-open", open);
+  menuBtn.setAttribute("aria-expanded", open);
+  menuBtn.setAttribute("aria-label", open ? "Cerrar menú de luchadores" : "Abrir menú de luchadores");
+  if (open) { sidePanel.removeAttribute("inert"); const cur = sidePanel.querySelector('[aria-current="true"]') || document.getElementById("search"); setTimeout(() => cur && cur.focus(), 60); }
+  else { const had = sidePanel.contains(document.activeElement); sidePanel.setAttribute("inert", ""); if (had) menuBtn.focus(); }
+}
+menuBtn.addEventListener("click", () => setMenu(!document.body.classList.contains("menu-open")));
+document.getElementById("menuClose").addEventListener("click", () => setMenu(false));
+document.getElementById("scrim").addEventListener("click", () => setMenu(false));
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("menu-open") && !document.querySelector("dialog[open]")) setMenu(false); });
 function onPick(e){
   const b = e.target.closest("button[data-id]"); if (!b) return;
   selectedId = b.dataset.id; catFilter = "Todos"; editingMoveId = null; render();
+  setMenu(false);
   document.getElementById("detail").scrollTop = 0;
   if (window.scrollY > 200) window.scrollTo(0, 0);
 }
@@ -818,6 +856,13 @@ document.getElementById("search").addEventListener("input", e => { query = e.tar
 document.getElementById("detail").addEventListener("click", e => {
   const chip = e.target.closest("[data-cat]");
   if (chip) { catFilter = chip.dataset.cat; renderDetail(); return; }
+  const nv = e.target.closest("[data-nav]");
+  if (nv) {
+    const list = sortedChars(); const i = list.findIndex(x => x.id === selectedId);
+    const nx = list[(i + Number(nv.dataset.nav) + list.length) % list.length];
+    if (nx) { selectedId = nx.id; catFilter = "Todos"; editingMoveId = null; render(); }
+    return;
+  }
   const vt = e.target.closest("[data-view]");
   if (vt && !vt.disabled) { viewMode = vt.dataset.view; lsSet(VIEW_KEY, viewMode); renderDetail(); return; }
   const go = e.target.closest("[data-goto]");
